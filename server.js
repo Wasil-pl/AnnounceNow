@@ -22,6 +22,8 @@ app.use(cors());
 
 // add announcments routes
 app.use('/api', require('./routes/announcements.routes'));
+app.use('/api', require('./routes/users.routes'));
+app.use('/auth', require('./routes/auth.routes'));
 
 // add user routes
 
