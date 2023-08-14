@@ -30,7 +30,8 @@ exports.loadOne = async (req, res) => {
 
 exports.add = async (req, res) => {
   try {
-    const { title, content, date, price, address, seller } = req.body;
+    const seller = req.session.login.id;
+    const { title, content, date, price, address } = req.body;
     const newAnnouncement = new Announcement({
       title,
       content,
@@ -48,7 +49,7 @@ exports.add = async (req, res) => {
 
 exports.edit = async (req, res) => {
   try {
-    const { title, content, date, price, address, seller } = req.body;
+    const { title, content, date, price, address } = req.body;
     const announcement = await Announcement.findById(req.params.id);
 
     if (!announcement) return res.status(404).json({ message: 'Not found...' });
@@ -58,7 +59,6 @@ exports.edit = async (req, res) => {
     announcement.date = date;
     announcement.price = price;
     announcement.address = address;
-    announcement.seller = seller;
     await announcement.save();
     res.json({ message: 'OK' });
   } catch (err) {
