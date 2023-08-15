@@ -1,30 +1,38 @@
 const User = require('../models/User.model');
 const bcrypt = require('bcryptjs');
 const getImageFileType = require('../utils/getImageFileType');
+const fileToDelete = require('../utils/fileToDelete');
 
 exports.register = async (req, res) => {
   try {
     const { login, password, phoneNumber } = req.body;
     const file = req.file;
-    console.log('file:', file);
 
     if (!file) return res.status(400).json({ message: 'Missing file!' });
 
-    if (!login || !password || !phoneNumber) return res.status(400).json({ message: 'Missing input!' });
+    if (!login || !password || !phoneNumber) {
+      fileToDelete(file);
+      return res.status(400).json({ message: 'Missing input!' });
+    }
 
-    if (typeof login !== 'string' && typeof password !== 'string')
+    if (typeof login !== 'string' || typeof password !== 'string' || typeof phoneNumber !== 'string') {
+      fileToDelete(file);
       return res.status(400).json({ message: 'Wrong input!' });
-
-    if (typeof phoneNumber !== 'number') return res.status(400).json({ message: 'Wrong input!' });
+    }
 
     const fileType = file ? await getImageFileType(file) : 'unknown';
     const acceptedFileTypes = ['image/png', 'image/gif', 'image/jpeg'];
 
-    if (!acceptedFileTypes.includes(fileType)) return res.status(400).json({ message: 'Invalid file type' });
+    if (!acceptedFileTypes.includes(fileType)) {
+      fileToDelete(file);
+      return res.status(400).json({ message: 'Invalid file type' });
+    }
 
     const userWithLogin = await User.findOne({ login });
-
-    if (userWithLogin) return res.status(409).json({ message: 'User with this login already exists' });
+    if (userWithLogin) {
+      fileToDelete(file);
+      return res.status(409).json({ message: 'User with this login already exists' });
+    }
 
     const user = await User.create({
       login,
@@ -34,6 +42,7 @@ exports.register = async (req, res) => {
     });
     res.status(201).json({ message: 'User created ' + user.login });
   } catch (err) {
+    fileToDelete(req.file);
     res.status(500).json({ message: err.message });
   }
 };

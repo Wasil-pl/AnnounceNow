@@ -18,14 +18,33 @@ connectToDB();
 // add middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors());
+
+// add cors middleware
+if (process.env.NODE_ENV !== 'production') {
+  app.use(
+    cors({
+      origin: ['http://localhost:3000'],
+      credentials: true,
+    })
+  );
+}
 
 // add session middleware
 app.use(
-  session({ secret: 'xyz567', store: MongoStore.create(mongoose.connection), resave: false, saveUninitialized: false })
+  session({
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+      secure: process.env.NODE_ENV == 'production',
+    },
+    store: MongoStore.create(mongoose.connection),
+    resave: false,
+    saveUninitialized: false,
+  })
 );
 
 // Serve static files from the React app
+app.use(express.static(path.join(__dirname, '/client/build')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 // add announcments routes
 app.use('/api', require('./routes/announcements.routes'));

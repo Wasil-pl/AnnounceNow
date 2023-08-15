@@ -32,6 +32,16 @@ exports.add = async (req, res) => {
   try {
     const seller = req.session.login.id;
     const { title, content, date, price, address } = req.body;
+
+    const pattern = /^[a-zA-Z \.\,\-\_\(\)]*$/;
+    if (!pattern.test(title)) return res.status(400).json({ message: 'Title can contain only letters' });
+    if (!pattern.test(content)) return res.status(400).json({ message: 'Content can contain only letters' });
+
+    const titleMaxLength = 50;
+    const contentMaxLength = 1000;
+    if (title.length >= titleMaxLength) throw new Error('Title is too long');
+    if (content.length >= contentMaxLength) throw new Error('Content name is too long');
+
     const newAnnouncement = new Announcement({
       title,
       content,
@@ -51,6 +61,18 @@ exports.edit = async (req, res) => {
   try {
     const { title, content, date, price, address } = req.body;
     const announcement = await Announcement.findById(req.params.id);
+    const seller = req.session.login.id;
+
+    if (announcement.seller != seller) return res.status(403).json({ message: 'Not your ad...' });
+
+    const pattern = /^[a-zA-Z \.\,\-\_\(\)]*$/;
+    if (!pattern.test(title)) return res.status(400).json({ message: 'Title can contain only letters' });
+    if (!pattern.test(content)) return res.status(400).json({ message: 'Content can contain only letters' });
+
+    const titleMaxLength = 50;
+    const contentMaxLength = 1000;
+    if (title.length >= titleMaxLength) throw new Error('Title is too long');
+    if (content.length >= contentMaxLength) throw new Error('Content name is too long');
 
     if (!announcement) return res.status(404).json({ message: 'Not found...' });
 
@@ -69,6 +91,9 @@ exports.edit = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const announcement = await Announcement.findById(req.params.id);
+    const seller = req.session.login.id;
+
+    if (announcement.seller != seller) return res.status(403).json({ message: 'Not your ad...' });
 
     if (!announcement) res.status(404).json({ message: 'Not found...' });
 
