@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const textPattern = new RegExp(/^[a-zA-Z1-9 \.\,\-\_\(\)]*$/);
+const { pattern, titleMaxLength, contentMaxLength } = require('../const');
 
 const announcementSchema = new mongoose.Schema({
-  title: { type: String, required: true, match: textPattern, maxLength: 50 },
-  content: { type: String, required: true, match: textPattern, maxLength: 1000 },
+  title: { type: String, required: true, match: pattern, maxLength: titleMaxLength },
+  content: { type: String, required: true, match: pattern, maxLength: contentMaxLength },
   picture: { type: String, required: true },
   date: { type: Date, required: true },
   price: { type: Number, required: true },

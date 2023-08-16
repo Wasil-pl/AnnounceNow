@@ -2,6 +2,7 @@ const User = require('../models/User.model');
 const bcrypt = require('bcryptjs');
 const getImageFileType = require('../utils/getImageFileType');
 const fileToDelete = require('../utils/fileToDelete');
+const { validatePhoneNumber } = require('../const');
 
 exports.register = async (req, res) => {
   try {
@@ -20,7 +21,12 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: 'Wrong input!' });
     }
 
-    const fileType = file ? await getImageFileType(file) : 'unknown';
+    if (!validatePhoneNumber.test(phoneNumber)) {
+      fileToDelete(file);
+      return res.status(400).json({ message: 'Wrong phone number!' });
+    }
+
+    const fileType = await getImageFileType(file);
     const acceptedFileTypes = ['image/png', 'image/gif', 'image/jpeg'];
 
     if (!acceptedFileTypes.includes(fileType)) {
@@ -28,8 +34,8 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: 'Invalid file type' });
     }
 
-    const userWithLogin = await User.findOne({ login });
-    if (userWithLogin) {
+    const userExists = await User.findOne({ login });
+    if (userExists) {
       fileToDelete(file);
       return res.status(409).json({ message: 'User with this login already exists' });
     }
@@ -51,7 +57,7 @@ exports.login = async (req, res) => {
   try {
     const { login, password } = req.body;
 
-    if (!login && typeof login !== 'string' && !password && typeof password !== 'string')
+    if (!login || typeof login !== 'string' || !password || typeof password !== 'string')
       return res.status(400).json({ message: 'Invalid request' });
 
     const user = await User.findOne({ login });

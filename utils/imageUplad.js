@@ -1,6 +1,6 @@
 const multer = require('multer');
 
-const limits = { fileSize: 1024 * 1024 };
+const limits = { fileSize: 1024 * 1024 * 5 };
 
 let path = './public/uploads/images';
 

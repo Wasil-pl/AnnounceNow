@@ -46,12 +46,14 @@ app.use(
 app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(express.static(path.join(__dirname, '/public')));
 
-// add announcments routes
+// add routes
 app.use('/api', require('./routes/announcements.routes'));
 app.use('/api', require('./routes/users.routes'));
 app.use('/auth', require('./routes/auth.routes'));
 
-// add user routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
 
 app.use((req, res) => {
   res.status(404).send({ message: 'Not found...' });
