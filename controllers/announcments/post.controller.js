@@ -9,36 +9,22 @@ exports.add = async (req, res) => {
     const { title, content, date, price, address } = req.body;
     const file = req.file;
 
-    if (!file) return res.status(400).json({ message: 'No file uploaded' });
+    if (!file) throw { message: 'Missing file!', status: 400 };
 
-    if (!title || !content || !date || !price || !address) {
-      deleteFile(file);
-      return res.status(400).json({ message: 'Not all fields have been entered' });
-    }
+    if (!title || !content || !date || !price || !address)
+      throw { message: 'Not all fields have been entered', status: 400 };
 
-    if (!textPattern.test(title)) {
-      deleteFile(file);
-      return res.status(400).json({ message: 'Title can contain only letters' });
-    }
-    if (!textPattern.test(content)) {
-      deleteFile(file);
-      return res.status(400).json({ message: 'Content can contain only letters' });
-    }
+    if (!textPattern.test(title)) throw { message: 'Title can contain only letters', status: 400 };
+    if (!textPattern.test(content)) throw { message: 'Content can contain only letters', status: 400 };
 
-    if (!validatePrice.test(price)) {
-      deleteFile(file);
-      return res.status(400).json({ message: 'Invalid price' });
-    }
+    if (!validatePrice.test(price)) throw { message: 'Invalid price', status: 400 };
 
-    if (title.length >= titleMaxLength) throw new Error('Title is too long');
-    if (content.length >= contentMaxLength) throw new Error('Content is too long');
+    if (title.length >= titleMaxLength) throw { message: 'Title is too long', status: 400 };
+    if (content.length >= contentMaxLength) throw { message: 'Content is too long', status: 400 };
 
     const fileType = await getImageFileType(file);
 
-    if (!acceptedFileTypes.includes(fileType)) {
-      deleteFile(file);
-      return res.status(400).json({ message: 'Invalid file type' });
-    }
+    if (!acceptedFileTypes.includes(fileType)) throw { message: 'Invalid file type', status: 400 };
 
     const newAnnouncement = new Announcement({
       title,
@@ -53,6 +39,6 @@ exports.add = async (req, res) => {
     res.json({ message: 'OK' });
   } catch (err) {
     deleteFile(req.file);
-    res.status(500).json({ message: err.message });
+    res.status(err.status ?? 500).json({ message: err.message });
   }
 };

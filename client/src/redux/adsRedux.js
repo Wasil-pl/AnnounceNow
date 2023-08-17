@@ -23,20 +23,18 @@ export const loadAdsRequest = () => {
   return async (dispatch) => {
     dispatch(startRequest());
     try {
-      const response = await httpClient.get(`${API_URL}/ads`);
-      const data = await response.json();
-
+      const data = await httpClient.get(`${API_URL}/ads`);
       dispatch(loadAds(data));
       dispatch(endRequest());
     } catch (error) {
-      dispatch(errorRequest({ message: error.message }));
+      const action = errorRequest({ message: error.message });
+      dispatch(action);
     }
   };
 };
 
 /* REDUCER */
 export const adsReducer = (statePart = { list: [], error: null, loading: false }, action) => {
-  console.log('action:', action);
   switch (action.type) {
     case LOAD_ADS:
       return { ...statePart, list: [...action.payload] };

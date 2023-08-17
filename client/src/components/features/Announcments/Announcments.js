@@ -9,7 +9,6 @@ const Announcments = () => {
   const adsData = useSelector(getAllData);
   const isLoading = useSelector(getLoadingState);
   const errorBox = useSelector(getErrorState);
-  console.log('errorBox:', errorBox);
 
   return (
     <Container>

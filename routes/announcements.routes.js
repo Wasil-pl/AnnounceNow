@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Announcement = require('../models/Announcment.model');
 
 const AddAdsController = require('../controllers/announcments/post.controller');
 const GetAdsController = require('../controllers/announcments/get.controller');
