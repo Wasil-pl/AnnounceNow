@@ -1,6 +1,8 @@
 @import './settings.scss';
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -17,7 +19,9 @@ body {
   min-height: 100vh;
 }
 
-a, a:hover, a:visited {
+a,
+a:hover,
+a:visited {
   text-decoration: none;
 }
 
@@ -28,6 +32,11 @@ a, a:hover, a:visited {
 
 .standard-box {
   max-width: 30rem;
+}
+
+.centered {
+  display: flex !important;
+  justify-content: center !important;
 }
 
 @import './typography.scss';

@@ -3,6 +3,8 @@ import { API_URL } from '../config';
 
 /* SELECTORS */
 export const getAllData = (state) => state.ads;
+export const getLoadingState = (state) => state.ads.loading;
+export const getErrorState = (state) => state.ads.error;
 
 /* ACTIONS */
 export const startRequest = (payload) => ({ payload, type: START_REQUEST });
@@ -34,6 +36,7 @@ export const loadAdsRequest = () => {
 
 /* REDUCER */
 export const adsReducer = (statePart = { list: [], error: null, loading: false }, action) => {
+  console.log('action:', action);
   switch (action.type) {
     case LOAD_ADS:
       return { ...statePart, list: [...action.payload] };
