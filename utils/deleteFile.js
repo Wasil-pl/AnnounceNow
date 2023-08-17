@@ -2,7 +2,7 @@ const fs = require('fs');
 
 let path = './public/uploads/images/';
 
-const fileToDelete = (file) => {
+const deleteFile = (file) => {
   try {
     if (file.fieldname === 'avatar') path = './public/uploads/avatars/';
 
@@ -12,4 +12,4 @@ const fileToDelete = (file) => {
   }
 };
 
-module.exports = fileToDelete;
+module.exports = deleteFile;

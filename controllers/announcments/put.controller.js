@@ -1,6 +1,6 @@
-const { pattern, titleMaxLength, contentMaxLength, validatePrice } = require('../../const');
+const { textPattern, titleMaxLength, contentMaxLength, validatePrice, acceptedFileTypes } = require('../../const');
 const Announcement = require('../../models/Announcment.model');
-const fileToDelete = require('../../utils/fileToDelete');
+const deleteFile = require('../../utils/deleteFile');
 const getImageFileType = require('../../utils/getImageFileType');
 
 exports.edit = async (req, res) => {
@@ -15,29 +15,28 @@ exports.edit = async (req, res) => {
     if (!file) return res.status(400).json({ message: 'Missing file!' });
 
     if (!title || !content || !date || !price || !address) {
-      fileToDelete(file);
+      deleteFile(file);
       return res.status(400).json({ message: 'Not all fields have been entered' });
     }
 
-    if (!pattern.test(title)) {
-      fileToDelete(file);
+    if (!textPattern.test(title)) {
+      deleteFile(file);
       return res.status(400).json({ message: 'Title can contain only letters' });
     }
-    if (!pattern.test(content)) {
-      fileToDelete(file);
+    if (!textPattern.test(content)) {
+      deleteFile(file);
       return res.status(400).json({ message: 'Content can contain only letters' });
     }
 
     const fileType = await getImageFileType(file);
-    const acceptedFileTypes = ['image/png', 'image/gif', 'image/jpeg'];
 
     if (!acceptedFileTypes.includes(fileType)) {
-      fileToDelete(file);
+      deleteFile(file);
       return res.status(400).json({ message: 'Invalid file type' });
     }
 
     if (!validatePrice.test(price)) {
-      fileToDelete(file);
+      deleteFile(file);
       return res.status(400).json({ message: 'Invalid price' });
     }
 
@@ -45,7 +44,7 @@ exports.edit = async (req, res) => {
     if (content.length >= contentMaxLength) throw new Error('Content name is too long');
 
     if (!announcement) {
-      fileToDelete(file);
+      deleteFile(file);
       return res.status(404).json({ message: 'Not found...' });
     }
 
@@ -57,7 +56,7 @@ exports.edit = async (req, res) => {
     await announcement.save();
     res.json({ message: 'OK' });
   } catch (err) {
-    fileToDelete(req.file);
+    deleteFile(req.file);
     res.status(500).json({ message: err.message });
   }
 };

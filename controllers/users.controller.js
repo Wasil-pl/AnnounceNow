@@ -1,8 +1,8 @@
 const User = require('../models/User.model');
 
-exports.loadUser = async (req, res) => {
+exports.getUser = async (req, res) => {
   try {
-    res.status(200).json(req.session.login.login);
+    res.json(await User.findById(req.session.login.id).select('-password'));
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

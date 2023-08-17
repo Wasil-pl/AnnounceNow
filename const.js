@@ -10,3 +10,4 @@ exports.titleMaxLength = 50;
 exports.contentMaxLength = 1000;
 exports.validatePhoneNumber = /^\d{9}$/;
 exports.validatePrice = /^[1-9\d.,]+$/;
+exports.acceptedFileTypes = ['image/png', 'image/gif', 'image/jpeg'];

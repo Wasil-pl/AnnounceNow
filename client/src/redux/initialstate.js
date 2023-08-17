@@ -1,7 +1,9 @@
 const initialState = {
-  ads: [],
-  users: [],
-  requests: [],
+  ads: {
+    loading: false,
+    error: null,
+    list: [],
+  },
 };
 
 export default initialState;

@@ -1,7 +1,7 @@
 const User = require('../models/User.model');
 const bcrypt = require('bcryptjs');
 const getImageFileType = require('../utils/getImageFileType');
-const fileToDelete = require('../utils/fileToDelete');
+const deleteFile = require('../utils/deleteFile');
 const { validatePhoneNumber } = require('../const');
 
 exports.register = async (req, res) => {
@@ -12,17 +12,17 @@ exports.register = async (req, res) => {
     if (!file) return res.status(400).json({ message: 'Missing file!' });
 
     if (!login || !password || !phoneNumber) {
-      fileToDelete(file);
+      deleteFile(file);
       return res.status(400).json({ message: 'Missing input!' });
     }
 
     if (typeof login !== 'string' || typeof password !== 'string' || typeof phoneNumber !== 'string') {
-      fileToDelete(file);
+      deleteFile(file);
       return res.status(400).json({ message: 'Wrong input!' });
     }
 
     if (!validatePhoneNumber.test(phoneNumber)) {
-      fileToDelete(file);
+      deleteFile(file);
       return res.status(400).json({ message: 'Wrong phone number!' });
     }
 
@@ -30,13 +30,13 @@ exports.register = async (req, res) => {
     const acceptedFileTypes = ['image/png', 'image/gif', 'image/jpeg'];
 
     if (!acceptedFileTypes.includes(fileType)) {
-      fileToDelete(file);
+      deleteFile(file);
       return res.status(400).json({ message: 'Invalid file type' });
     }
 
     const userExists = await User.findOne({ login });
     if (userExists) {
-      fileToDelete(file);
+      deleteFile(file);
       return res.status(409).json({ message: 'User with this login already exists' });
     }
 
@@ -48,7 +48,7 @@ exports.register = async (req, res) => {
     });
     res.status(201).json({ message: 'User created ' + user.login });
   } catch (err) {
-    fileToDelete(req.file);
+    deleteFile(req.file);
     res.status(500).json({ message: err.message });
   }
 };
