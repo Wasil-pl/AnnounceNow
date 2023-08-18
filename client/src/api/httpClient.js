@@ -1,8 +1,5 @@
 const baseOptions = {
   method: 'GET',
-  headers: {
-    'Content-Type': 'application/json',
-  },
 };
 
 const validateRequest = async (res) => {
@@ -16,8 +13,23 @@ const validateRequest = async (res) => {
   throw new Error('Unknown error. Details: ' + response.message);
 };
 
-const makeRequest = async (url, method = 'GET', body, options) =>
-  await fetch(url, { ...baseOptions, method, body: JSON.stringify(body), ...options }).then(validateRequest);
+const makeRequest = async (url, method = 'GET', body, options) => {
+  const requestOptions = {
+    ...baseOptions,
+    method,
+    ...options,
+  };
+
+  if (body) {
+    if (body instanceof FormData) {
+      requestOptions.body = body;
+    } else {
+      requestOptions.body = JSON.stringify(body);
+    }
+  }
+
+  return fetch(url, requestOptions).then(validateRequest);
+};
 
 export const httpClient = {
   get: (url) => makeRequest(url),

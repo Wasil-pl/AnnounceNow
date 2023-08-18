@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { AppBar, Avatar, Menu, MenuItem, Toolbar, ListItemIcon, Divider, Button } from '@mui/material';
-import { PersonAdd, Logout } from '@mui/icons-material';
+import { PersonAdd, Logout, Login } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { menuPaperProps } from './MenuSettings';
 import styles from './MainMenu.module.scss';
+import { AVATARS_URL } from '../../../config';
 
 const MainMenu = () => {
   const [avatarAnchorEl, setAvatarAnchorEl] = useState(null);
@@ -30,7 +31,13 @@ const MainMenu = () => {
               Add Announcment{' '}
             </Button>
           </div>
-          <Avatar className={styles.avatar} sx={{ width: 32, height: 32 }} onClick={handleAvatarClick} />
+          <Avatar
+            className={styles.avatar}
+            src={AVATARS_URL}
+            alt={'L'}
+            sx={{ width: 32, height: 32 }}
+            onClick={handleAvatarClick}
+          />
         </Toolbar>
       </AppBar>
       <Menu
@@ -44,7 +51,7 @@ const MainMenu = () => {
         <MenuItem>
           <ListItemIcon>
             <Avatar />
-            <Link to="/ad/add" onClick={handleClose}>
+            <Link to="/user" onClick={handleClose}>
               My account
             </Link>
           </ListItemIcon>
@@ -64,6 +71,14 @@ const MainMenu = () => {
           </ListItemIcon>
           <Link to="/logout" onClick={handleClose}>
             Logout
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <ListItemIcon>
+            <Login fontSize="small" />
+          </ListItemIcon>
+          <Link to="/login" onClick={handleClose}>
+            Login
           </Link>
         </MenuItem>
       </Menu>

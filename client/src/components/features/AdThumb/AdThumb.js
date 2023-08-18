@@ -2,6 +2,7 @@ import { Avatar, Button, Card, CardActions, CardHeader, CardMedia } from '@mui/m
 import { AVATARS_URL, IMAGES_URL } from '../../../config';
 import styles from './AdThumb.module.scss';
 import { titleTypography } from './AdThumbSettings';
+import { Link } from 'react-router-dom';
 
 const AdThumb = ({ data }) => {
   const { list } = data;
@@ -31,7 +32,9 @@ const AdThumb = ({ data }) => {
             alt={item.title}
           />
           <CardActions>
-            <Button size="small">Show More</Button>
+            <Button size="small" component={Link} to={`/ad/${item._id}`}>
+              Show More
+            </Button>
           </CardActions>
         </Card>
       ))}

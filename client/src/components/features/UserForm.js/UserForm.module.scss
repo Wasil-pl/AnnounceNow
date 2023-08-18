@@ -1,0 +1,9 @@
+.avatarContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+
+  p {
+    margin-left: 10px;
+  }
+}

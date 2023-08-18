@@ -12,7 +12,7 @@ const Announcments = () => {
 
   return (
     <Container>
-      {errorBox && <ErrorLoad />}
+      {errorBox && <ErrorLoad errorMsg={errorBox} />}
       {isLoading && !errorBox && <Loader />}
       {!isLoading && <AdThumb data={adsData} />}
     </Container>

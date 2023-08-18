@@ -1,12 +1,12 @@
 import { Alert, Container } from '@mui/material';
 import styles from './ErrorLoad.module.scss';
 
-const ErrorLoad = () => {
+const ErrorLoad = ({ errorMsg }) => {
   return (
     <Container className="centered">
       <Alert className={styles.alert} variant="filled" severity="error">
         {' '}
-        Something went wrong. Please try again later.
+        {errorMsg}
       </Alert>
     </Container>
   );

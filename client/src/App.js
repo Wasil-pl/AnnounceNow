@@ -1,7 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { loadAdsRequest } from './redux/adsRedux';
 
 // imports for React Router
 import MainLayout from './components/layout/MainLayout/MainLayout';
@@ -18,12 +15,6 @@ import User from './components/pages/User/User';
 import NotFoundPage from './components/pages/NotFound/NotFoundPage';
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadAdsRequest());
-  }, [dispatch]);
-
   return (
     <MainLayout>
       <Routes>
