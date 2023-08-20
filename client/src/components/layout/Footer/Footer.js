@@ -1,6 +1,9 @@
+import React from 'react';
+import styles from './Footer.module.scss';
+
 const Footer = () => (
   <footer>
-    <div className="text-center">
+    <div className={styles.footer}>
       <small>Copyright &copy; AnnounceNow {new Date().getFullYear()}</small>
     </div>
   </footer>

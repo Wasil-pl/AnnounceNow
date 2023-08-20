@@ -3,10 +3,11 @@ import AdThumb from '../AdThumb/AdThumb';
 import { getAllData, getErrorState, getLoadingState } from '../../../redux/adsRedux';
 import { Container } from '@mui/material';
 import Loader from '../Loader/Loader';
-import ErrorLoad from '../../ErrorLoad/ErrorLoad';
+import ErrorLoad from '../ErrorLoad/ErrorLoad';
 
 const Announcments = () => {
   const adsData = useSelector(getAllData);
+  console.log('adsData:', adsData);
   const isLoading = useSelector(getLoadingState);
   const errorBox = useSelector(getErrorState);
 

@@ -4,13 +4,13 @@ const initialState = {
     error: null,
     list: [],
     selectedAd: {},
+    searchResult: [],
   },
 
   user: {
     loading: false,
     error: null,
-    logged: false,
-    user: {},
+    user: null,
   },
 };
 

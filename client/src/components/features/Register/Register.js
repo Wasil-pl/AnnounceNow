@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
 import UserForm from '../UserForm.js/UserForm';
-import { addUserRequest } from '../../../redux/UserRedux';
-import { getErrorState, getLoadingState } from '../../../redux/adsRedux';
-import ErrorLoad from '../../ErrorLoad/ErrorLoad';
+import { addUserRequest, getUserErrorState, getUserLoadingState } from '../../../redux/UserRedux';
+
+import ErrorLoad from '../ErrorLoad/ErrorLoad';
 import Loader from '../Loader/Loader';
 
 const Register = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(getLoadingState);
-  const errorBox = useSelector(getErrorState);
+  const isLoading = useSelector(getUserLoadingState);
+  const errorBox = useSelector(getUserErrorState);
 
   const handleSubmit = ({ login, password, phoneNumber, avatar }) => {
     const formData = new FormData();

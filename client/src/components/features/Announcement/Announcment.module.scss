@@ -1,16 +1,12 @@
 @import '../../../styles/settings.scss';
 
 .cardContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
   border: 1px solid $color-border;
   border-radius: $radius;
   padding: 16px;
   box-shadow: $shadow;
 
   .card {
-    width: 300px;
     margin-bottom: 16px;
 
     .cardHeader {
@@ -24,13 +20,13 @@
     }
 
     .cardPicture {
-      height: 220px;
+      height: 400px;
       object-fit: contain;
     }
 
     .content {
       padding: 0 16px 16px 16px;
-      height: 50px;
+
       overflow: hidden;
     }
   }

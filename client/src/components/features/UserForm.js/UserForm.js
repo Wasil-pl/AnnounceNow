@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  Chip,
   Container,
   CssBaseline,
   Input,
@@ -24,12 +25,26 @@ const UserForm = ({ action, actionText, register }) => {
   const handleFileChange = (event) => {
     setAvatar(event.target.files[0]);
     const file = event.target.files[0];
-    setSelectedFileName(file.name);
+    if (file) setSelectedFileName(file.name);
+  };
+
+  const handleChipDelete = () => {
+    setAvatar(null);
+    setSelectedFileName('');
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    action({ login, password, phoneNumber, avatar });
+
+    if (register) {
+      action({ login, password, phoneNumber, avatar });
+      setLogin('');
+      return setPassword('');
+    }
+    action({ login, password });
+
+    setLogin('');
+    setPassword('');
   };
 
   const defaultTheme = createTheme();
@@ -99,9 +114,12 @@ const UserForm = ({ action, actionText, register }) => {
                   />
                 </Button>
                 {selectedFileName && (
-                  <Typography sx={{ mt: 1 }} variant="body2">
-                    {selectedFileName}
-                  </Typography>
+                  <Chip
+                    sx={{ mt: 1, marginLeft: 2 }}
+                    label={selectedFileName}
+                    color="primary"
+                    onDelete={handleChipDelete}
+                  />
                 )}
               </div>
             )}

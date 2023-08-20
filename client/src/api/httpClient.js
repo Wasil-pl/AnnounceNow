@@ -1,5 +1,6 @@
 const baseOptions = {
   method: 'GET',
+  credentials: 'include',
 };
 
 const validateRequest = async (res) => {
@@ -24,10 +25,12 @@ const makeRequest = async (url, method = 'GET', body, options) => {
     if (body instanceof FormData) {
       requestOptions.body = body;
     } else {
+      requestOptions.headers = {
+        'Content-Type': 'application/json',
+      };
       requestOptions.body = JSON.stringify(body);
     }
   }
-
   return fetch(url, requestOptions).then(validateRequest);
 };
 

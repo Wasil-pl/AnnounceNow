@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import { loadAdsRequest } from '../../../redux/adsRedux';
 import Announcments from '../../features/Announcments/Announcments';
 import { useEffect } from 'react';
+import SearchPhrase from '../../features/SearchPhrase/SearchPhrase';
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <div>search</div>
+      <SearchPhrase />
       <Announcments />
     </div>
   );

@@ -2,43 +2,28 @@ const User = require('../models/User.model');
 const bcrypt = require('bcryptjs');
 const getImageFileType = require('../utils/getImageFileType');
 const deleteFile = require('../utils/deleteFile');
-const { validatePhoneNumber } = require('../const');
+const { validatePhoneNumber, acceptedFileTypes } = require('../const');
 
 exports.register = async (req, res) => {
   try {
     const { login, password, phoneNumber } = req.body;
     const file = req.file;
 
-    if (!file) return res.status(400).json({ message: 'Missing file!' });
+    if (!file) throw { message: 'Missing file!', status: 400 };
 
-    if (!login || !password || !phoneNumber) {
-      deleteFile(file);
-      return res.status(400).json({ message: 'Missing input!' });
-    }
+    if (!login || !password || !phoneNumber) throw { message: 'Not all fields have been entered', status: 400 };
 
-    if (typeof login !== 'string' || typeof password !== 'string' || typeof phoneNumber !== 'string') {
-      deleteFile(file);
-      return res.status(400).json({ message: 'Wrong input!' });
-    }
+    if (typeof login !== 'string' || typeof password !== 'string' || typeof phoneNumber !== 'string')
+      throw { message: 'Wrong input!', status: 400 };
 
-    if (!validatePhoneNumber.test(phoneNumber)) {
-      deleteFile(file);
-      return res.status(400).json({ message: 'Wrong phone number!' });
-    }
+    if (!validatePhoneNumber.test(phoneNumber)) throw { message: 'Wrong phone number!', status: 400 };
 
     const fileType = await getImageFileType(file);
-    const acceptedFileTypes = ['image/png', 'image/gif', 'image/jpeg'];
 
-    if (!acceptedFileTypes.includes(fileType)) {
-      deleteFile(file);
-      return res.status(400).json({ message: 'Invalid file type' });
-    }
+    if (!acceptedFileTypes.includes(fileType)) throw { message: 'Invalid file type', status: 400 };
 
     const userExists = await User.findOne({ login });
-    if (userExists) {
-      deleteFile(file);
-      return res.status(409).json({ message: 'User with this login already exists' });
-    }
+    if (userExists) throw { message: 'User with this login already exists', status: 409 };
 
     const user = await User.create({
       login,

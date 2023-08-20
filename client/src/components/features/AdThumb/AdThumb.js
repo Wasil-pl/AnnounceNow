@@ -5,11 +5,9 @@ import { titleTypography } from './AdThumbSettings';
 import { Link } from 'react-router-dom';
 
 const AdThumb = ({ data }) => {
-  const { list } = data;
-
   return (
     <div className={styles.cardContainer}>
-      {list.map((item) => (
+      {data.map((item) => (
         <Card key={item._id} className={styles.card}>
           <CardHeader
             className={styles.cardHeader}

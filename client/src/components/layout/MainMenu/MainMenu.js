@@ -5,9 +5,15 @@ import { Link } from 'react-router-dom';
 import { menuPaperProps } from './MenuSettings';
 import styles from './MainMenu.module.scss';
 import { AVATARS_URL } from '../../../config';
+import { useSelector } from 'react-redux';
+import { getUserAvatar, getUserAvatarFromLocalStorage, getUserLoggedState } from '../../../redux/UserRedux';
 
 const MainMenu = () => {
   const [avatarAnchorEl, setAvatarAnchorEl] = useState(null);
+
+  const logged = useSelector(getUserLoggedState);
+  const avatar = useSelector(getUserAvatar);
+  const avatarFromLS = useSelector(getUserAvatarFromLocalStorage);
 
   const handleAvatarClick = (event) => {
     setAvatarAnchorEl(event.currentTarget);
@@ -33,7 +39,7 @@ const MainMenu = () => {
           </div>
           <Avatar
             className={styles.avatar}
-            src={AVATARS_URL}
+            src={avatar ? AVATARS_URL + avatar : AVATARS_URL + avatarFromLS}
             alt={'L'}
             sx={{ width: 32, height: 32 }}
             onClick={handleAvatarClick}
@@ -48,15 +54,19 @@ const MainMenu = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem>
-          <ListItemIcon>
-            <Avatar />
-            <Link to="/user" onClick={handleClose}>
-              My account
-            </Link>
-          </ListItemIcon>
-        </MenuItem>
-        <Divider />
+        {!!logged && (
+          <span>
+            <MenuItem>
+              <ListItemIcon>
+                <Avatar src={avatar ? AVATARS_URL + avatar : AVATARS_URL + avatarFromLS} alt={'A'} />
+                <Link to="/user" onClick={handleClose}>
+                  My account
+                </Link>
+              </ListItemIcon>
+            </MenuItem>
+            <Divider />
+          </span>
+        )}
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
@@ -65,22 +75,28 @@ const MainMenu = () => {
             Add another account
           </Link>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          <Link to="/logout" onClick={handleClose}>
-            Logout
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Login fontSize="small" />
-          </ListItemIcon>
-          <Link to="/login" onClick={handleClose}>
-            Login
-          </Link>
-        </MenuItem>
+        {!!logged && (
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+
+            <Link to="/logout" onClick={handleClose}>
+              Logout
+            </Link>
+          </MenuItem>
+        )}
+        {!logged && (
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <Login fontSize="small" />
+            </ListItemIcon>
+
+            <Link to="/login" onClick={handleClose}>
+              Login
+            </Link>
+          </MenuItem>
+        )}
       </Menu>
     </div>
   );

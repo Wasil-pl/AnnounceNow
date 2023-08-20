@@ -7,14 +7,26 @@ import Announcment from './components/features/Announcement/Announcement';
 import AddAnnouncment from './components/pages/AddAnnouncment/AddAnnouncment';
 import EditAnnouncment from './components/pages/EditAnnouncment/EditAnnouncment';
 import DeleteAd from './components/features/DeleteAd/DeleteAd';
-import SearchPhrase from './components/features/SearchPhrase/SearchPhrase';
 import Register from './components/features/Register/Register';
 import Login from './components/features/Login/Login';
 import Logout from './components/features/Logout/Logout';
 import User from './components/pages/User/User';
 import NotFoundPage from './components/pages/NotFound/NotFoundPage';
+import SearchResult from './components/pages/SearchResult/SearchResult';
+import { changeUserState, getUserAvatarFromLocalStorage } from './redux/UserRedux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 function App() {
+  const avatarFromLS = useSelector(getUserAvatarFromLocalStorage);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (avatarFromLS !== 'false') {
+      dispatch(changeUserState());
+    }
+  }, [dispatch, avatarFromLS]);
+
   return (
     <MainLayout>
       <Routes>
@@ -23,7 +35,7 @@ function App() {
         <Route path="/ad/add" element={<AddAnnouncment />} />
         <Route path="/ad/edit/:id" element={<EditAnnouncment />} />
         <Route path="/ad/remove/:id" element={<DeleteAd />} />
-        <Route path="/ad/search/:searchPhrase" element={<SearchPhrase />} />
+        <Route path="/ad/search/:searchPhrase" element={<SearchResult />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
