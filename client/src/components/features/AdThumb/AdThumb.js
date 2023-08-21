@@ -3,11 +3,16 @@ import { AVATARS_URL, IMAGES_URL } from '../../../config';
 import styles from './AdThumb.module.scss';
 import { titleTypography } from './AdThumbSettings';
 import { Link } from 'react-router-dom';
+import Announcment from '../Announcement/Announcement';
 
 const AdThumb = ({ data }) => {
+  const sortedData = data.sort((a, b) => {
+    return new Date(b.date) - new Date(a.date);
+  });
+
   return (
     <div className={styles.cardContainer}>
-      {data.map((item) => (
+      {sortedData.map((item) => (
         <Card key={item._id} className={styles.card}>
           <CardHeader
             className={styles.cardHeader}
@@ -30,9 +35,9 @@ const AdThumb = ({ data }) => {
             alt={item.title}
           />
           <CardActions>
-            <Button size="small" component={Link} to={`/ad/${item._id}`}>
-              Show More
-            </Button>
+            <Link to={`/ad/${item._id}`} element={<Announcment />}>
+              <Button size="small">Show More</Button>
+            </Link>
           </CardActions>
         </Card>
       ))}

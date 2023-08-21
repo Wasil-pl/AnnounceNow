@@ -1,0 +1,13 @@
+.avatarContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+
+  .pictureBtn {
+    margin: 0;
+  }
+
+  .chip {
+    margin: 0 0 0 15px;
+  }
+}

@@ -1,4 +1,11 @@
-const { textPattern, titleMaxLength, contentMaxLength, validatePrice, acceptedFileTypes } = require('../../const');
+const {
+  textPattern,
+  titleMaxLength,
+  contentMaxLength,
+  validatePrice,
+  acceptedFileTypes,
+  validateDate,
+} = require('../../const');
 const Announcement = require('../../models/Announcment.model');
 const deleteFile = require('../../utils/deleteFile');
 const getImageFileType = require('../../utils/getImageFileType');
@@ -18,6 +25,8 @@ exports.add = async (req, res) => {
     if (!textPattern.test(content)) throw { message: 'Content can contain only letters', status: 400 };
 
     if (!validatePrice.test(price)) throw { message: 'Invalid price', status: 400 };
+
+    if (!validateDate.test(date)) throw { message: 'Invalid date', status: 400 };
 
     if (title.length >= titleMaxLength) throw { message: 'Title is too long', status: 400 };
     if (content.length >= contentMaxLength) throw { message: 'Content is too long', status: 400 };

@@ -1,16 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Chip,
-  Container,
-  CssBaseline,
-  Input,
-  TextField,
-  ThemeProvider,
-  Typography,
-  createTheme,
-} from '@mui/material';
+import { Avatar, Box, Button, Chip, Container, CssBaseline, Input, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useState } from 'react';
 import styles from './UserForm.module.scss';
@@ -39,7 +27,7 @@ const UserForm = ({ action, actionText, register }) => {
     if (register) {
       action({ login, password, phoneNumber, avatar });
       setLogin('');
-      return setPassword('');
+      setPassword('');
     }
     action({ login, password });
 
@@ -47,90 +35,87 @@ const UserForm = ({ action, actionText, register }) => {
     setPassword('');
   };
 
-  const defaultTheme = createTheme();
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            {actionText}
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          {actionText}
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            onChange={(event) => setLogin(event.target.value)}
+            margin="normal"
+            required
+            fullWidth
+            id="login"
+            label="login"
+            name="login"
+            autoComplete="login"
+            autoFocus
+          />
+          <TextField
+            onChange={(event) => setPassword(event.target.value)}
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          {register && (
             <TextField
-              onChange={(event) => setLogin(event.target.value)}
+              onChange={(event) => setPhoneNumber(event.target.value)}
               margin="normal"
               required
               fullWidth
-              id="login"
-              label="login"
-              name="login"
-              autoComplete="login"
-              autoFocus
+              name="phoneNumber"
+              label="Phone Number"
+              type="number"
+              id="phoneNumber"
             />
-            <TextField
-              onChange={(event) => setPassword(event.target.value)}
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            {register && (
-              <TextField
-                onChange={(event) => setPhoneNumber(event.target.value)}
-                margin="normal"
-                required
-                fullWidth
-                name="phoneNumber"
-                label="Phone Number"
-                type="number"
-                id="phoneNumber"
-              />
-            )}
-            {register && (
-              <div className={styles.avatarContainer}>
-                <Button component="label" variant="contained" sx={{ mt: 3 }}>
-                  Add Avatar
-                  <Input
-                    type="file"
-                    accept=".jpg, .jpeg, .png"
-                    required
-                    onChange={handleFileChange}
-                    sx={{ display: 'none' }}
-                  />
-                </Button>
-                {selectedFileName && (
-                  <Chip
-                    sx={{ mt: 1, marginLeft: 2 }}
-                    label={selectedFileName}
-                    color="primary"
-                    onDelete={handleChipDelete}
-                  />
-                )}
-              </div>
-            )}
+          )}
+          {register && (
+            <div className={styles.avatarContainer}>
+              <Button component="label" variant="contained" sx={{ mt: 3 }}>
+                Add Avatar
+                <Input
+                  type="file"
+                  accept=".jpg, .jpeg, .png"
+                  required
+                  onChange={handleFileChange}
+                  sx={{ display: 'none' }}
+                />
+              </Button>
+              {selectedFileName && (
+                <Chip
+                  sx={{ mt: 1, marginLeft: 2 }}
+                  label={selectedFileName}
+                  color="primary"
+                  onDelete={handleChipDelete}
+                />
+              )}
+            </div>
+          )}
 
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              {actionText}
-            </Button>
-          </Box>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            {actionText}
+          </Button>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Box>
+    </Container>
   );
 };
 

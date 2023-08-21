@@ -3,7 +3,7 @@ const initialState = {
     loading: false,
     error: null,
     list: [],
-    selectedAd: {},
+    selectedAd: null,
     searchResult: [],
   },
 
