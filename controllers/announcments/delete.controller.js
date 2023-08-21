@@ -1,4 +1,5 @@
 const Announcement = require('../../models/Announcment.model');
+const fs = require('fs');
 
 exports.delete = async (req, res) => {
   try {
@@ -8,6 +9,8 @@ exports.delete = async (req, res) => {
     if (announcement.seller != seller) return res.status(403).json({ message: 'Not your ad...' });
 
     if (!announcement) res.status(404).json({ message: 'Not found...' });
+
+    fs.unlinkSync('./public/uploads/images/' + announcement.picture);
 
     await Announcement.deleteOne(announcement);
     res.json({ message: 'OK' });
