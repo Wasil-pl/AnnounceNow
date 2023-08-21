@@ -7,6 +7,7 @@ import ErrorLoad from '../ErrorLoad/ErrorLoad';
 
 const Announcments = () => {
   const adsData = useSelector(getAllData);
+  console.log('adsData:', adsData);
   const isLoading = useSelector(getLoadingState);
   const errorBox = useSelector(getErrorState);
 
@@ -14,7 +15,7 @@ const Announcments = () => {
     <Container>
       {errorBox && <ErrorLoad errorMsg={errorBox} />}
       {isLoading && !errorBox && <Loader />}
-      {!isLoading && <AdThumb data={adsData} />}
+      {!isLoading && !errorBox && <AdThumb data={adsData} />}
     </Container>
   );
 };

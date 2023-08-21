@@ -13,19 +13,19 @@ import Logout from './components/features/Logout/Logout';
 import User from './components/pages/User/User';
 import NotFoundPage from './components/pages/NotFound/NotFoundPage';
 import SearchResult from './components/pages/SearchResult/SearchResult';
-import { changeUserState, getUserAvatarFromLocalStorage } from './redux/UserRedux';
-import { useDispatch, useSelector } from 'react-redux';
+import { changeUserState } from './redux/UserRedux';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
 function App() {
-  const avatarFromLS = useSelector(getUserAvatarFromLocalStorage);
+  const user = JSON.parse(localStorage.getItem('loginUser'));
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (avatarFromLS !== 'false') {
+    if (user) {
       dispatch(changeUserState());
     }
-  }, [dispatch, avatarFromLS]);
+  }, [dispatch, user]);
 
   return (
     <MainLayout>

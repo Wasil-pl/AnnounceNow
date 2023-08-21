@@ -4,27 +4,31 @@ import { addUserRequest, getUserErrorState, getUserLoadingState } from '../../..
 
 import ErrorLoad from '../ErrorLoad/ErrorLoad';
 import Loader from '../Loader/Loader';
+import { useState } from 'react';
+import Success from '../Success/Success';
 
 const Register = () => {
+  const [success, setSuccess] = useState(false);
   const dispatch = useDispatch();
   const isLoading = useSelector(getUserLoadingState);
   const errorBox = useSelector(getUserErrorState);
 
-  const handleSubmit = ({ login, password, phoneNumber, avatar }) => {
-    const formData = new FormData();
-    formData.append('login', login);
-    formData.append('password', password);
-    formData.append('phoneNumber', phoneNumber);
-    formData.append('avatar', avatar);
-
+  const handleSubmit = (formData) => {
     dispatch(addUserRequest(formData));
+
+    if (!errorBox) {
+      setSuccess(true);
+    }
   };
+
+  const successMsg = 'You are registered';
 
   return (
     <span>
       {errorBox && <ErrorLoad errorMsg={errorBox} />}
       {isLoading && !errorBox && <Loader />}
-      <UserForm action={handleSubmit} actionText="Sign in" register />
+      {success && !isLoading && !errorBox && <Success successMsg={successMsg} />}
+      {!isLoading && !errorBox && !success && <UserForm action={handleSubmit} actionText="Sign in" register />}
     </span>
   );
 };

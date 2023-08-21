@@ -6,14 +6,15 @@ import { menuPaperProps } from './MenuSettings';
 import styles from './MainMenu.module.scss';
 import { AVATARS_URL } from '../../../config';
 import { useSelector } from 'react-redux';
-import { getUserAvatar, getUserAvatarFromLocalStorage, getUserLoggedState } from '../../../redux/UserRedux';
+import { getUserAvatar, getUserLoggedState } from '../../../redux/UserRedux';
 
 const MainMenu = () => {
   const [avatarAnchorEl, setAvatarAnchorEl] = useState(null);
 
   const logged = useSelector(getUserLoggedState);
   const avatar = useSelector(getUserAvatar);
-  const avatarFromLS = useSelector(getUserAvatarFromLocalStorage);
+  const userFromLocalStorage = localStorage.getItem('loginUser');
+  const user = userFromLocalStorage ? JSON.parse(userFromLocalStorage) : false;
 
   const handleAvatarClick = (event) => {
     setAvatarAnchorEl(event.currentTarget);
@@ -32,14 +33,16 @@ const MainMenu = () => {
               {' '}
               Home{' '}
             </Button>
-            <Button color="inherit" component={Link} to="/ad/add">
-              {' '}
-              Add Announcment{' '}
-            </Button>
+            {!!logged && (
+              <Button color="inherit" component={Link} to="/ad/add">
+                {' '}
+                Add Announcment{' '}
+              </Button>
+            )}
           </div>
           <Avatar
             className={styles.avatar}
-            src={avatar ? AVATARS_URL + avatar : AVATARS_URL + avatarFromLS}
+            src={avatar ? AVATARS_URL + avatar : AVATARS_URL + user.avatar}
             alt={'L'}
             sx={{ width: 32, height: 32 }}
             onClick={handleAvatarClick}
@@ -58,7 +61,7 @@ const MainMenu = () => {
           <span>
             <MenuItem>
               <ListItemIcon>
-                <Avatar src={avatar ? AVATARS_URL + avatar : AVATARS_URL + avatarFromLS} alt={'A'} />
+                <Avatar src={avatar ? AVATARS_URL + avatar : AVATARS_URL + user.avatar} alt={'A'} />
                 <Link to="/user" onClick={handleClose}>
                   My account
                 </Link>

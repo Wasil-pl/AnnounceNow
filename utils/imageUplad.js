@@ -6,6 +6,7 @@ let path = './public/uploads/images';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    console.log(file);
     if (file.fieldname === 'avatar') path = './public/uploads/avatars';
 
     cb(null, path);

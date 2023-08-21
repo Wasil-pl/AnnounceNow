@@ -17,12 +17,7 @@ const AdThumb = ({ data }) => {
           <CardHeader
             className={styles.cardHeader}
             avatar={
-              <Avatar
-                className={styles.avatar}
-                aria-label="recipe"
-                src={AVATARS_URL + item.seller.avatar}
-                alt={item.seller.login.charAt(0).toUpperCase()}
-              />
+              <Avatar className={styles.avatar} aria-label="recipe" src={AVATARS_URL + item.seller.avatar} alt={'A'} />
             }
             titleTypographyProps={titleTypography}
             title={item.title}

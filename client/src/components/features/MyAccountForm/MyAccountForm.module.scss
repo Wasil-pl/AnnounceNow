@@ -1,0 +1,16 @@
+@import '../../../styles/settings.scss';
+
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  padding: 16px;
+  box-shadow: $shadow;
+
+  .card {
+    width: 500px;
+    margin-bottom: 16px;
+  }
+}

@@ -45,7 +45,7 @@ exports.add = async (req, res) => {
       seller,
     });
     await newAnnouncement.save();
-    res.json({ message: 'OK' });
+    res.json(newAnnouncement);
   } catch (err) {
     deleteFile(req.file);
     res.status(err.status ?? 500).json({ message: err.message });

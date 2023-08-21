@@ -25,14 +25,15 @@ const UserForm = ({ action, actionText, register }) => {
     e.preventDefault();
 
     if (register) {
-      action({ login, password, phoneNumber, avatar });
-      setLogin('');
-      setPassword('');
+      const formData = new FormData();
+      formData.append('avatar', avatar);
+      formData.append('login', login);
+      formData.append('password', password);
+      formData.append('phoneNumber', phoneNumber);
+
+      return action(formData);
     }
     action({ login, password });
-
-    setLogin('');
-    setPassword('');
   };
 
   return (

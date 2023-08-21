@@ -10,11 +10,11 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
   const [address, setAddress] = useState(props.address || '');
   const [picture, setPicture] = useState(props.picture || null);
   const [selectedFileName, setSelectedFileName] = useState(props.picture || '');
-  const date = new Date().toISOString().slice(0, 10);
+  const date = props.date || new Date().toISOString().slice(0, 10);
 
   const handleFileChange = (event) => {
-    setPicture(event.target.files[0]);
     const file = event.target.files[0];
+    setPicture(event.target.files[0]);
     if (file) setSelectedFileName(file.name);
   };
 
@@ -61,6 +61,7 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
                 name="title"
                 label="Title"
                 variant="outlined"
+                value={title}
                 fullWidth
                 onChange={(event) => setTitle(event.target.value)}
               />
@@ -70,6 +71,7 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
                 name="content"
                 label="Content"
                 variant="outlined"
+                value={Content}
                 fullWidth
                 multiline
                 rows={4}
@@ -107,6 +109,7 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
                 name="price"
                 label="Price"
                 variant="outlined"
+                value={price}
                 fullWidth
                 onChange={(event) => setPrice(event.target.value)}
               />
@@ -116,6 +119,7 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
                 name="address"
                 label="Address"
                 variant="outlined"
+                value={address}
                 fullWidth
                 onChange={(event) => setAddress(event.target.value)}
               />

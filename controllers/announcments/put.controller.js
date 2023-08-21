@@ -46,8 +46,9 @@ exports.edit = async (req, res) => {
     announcement.date = date;
     announcement.price = price;
     announcement.address = address;
+    announcement.picture = file.filename;
     await announcement.save();
-    res.json({ message: 'OK' });
+    res.json(announcement);
   } catch (err) {
     deleteFile(req.file);
     res.status(err.status ?? 500).json({ message: err.message });

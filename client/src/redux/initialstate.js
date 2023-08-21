@@ -1,5 +1,6 @@
 const initialState = {
   ads: {
+    success: false,
     loading: false,
     error: null,
     list: [],

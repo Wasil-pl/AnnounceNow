@@ -23,6 +23,8 @@ import { getUserLoggedState } from '../../../redux/UserRedux';
 const AnnouncmentForm = ({ data }) => {
   const logged = useSelector(getUserLoggedState);
 
+  const user = JSON.parse(localStorage.getItem('loginUser'));
+
   return (
     <div className={styles.cardContainer}>
       <Card className={styles.card}>
@@ -64,14 +66,14 @@ const AnnouncmentForm = ({ data }) => {
           </Typography>
         </CardContent>
         <Divider />
-        {!!logged && (
+        {!!logged && user && user.id === data.seller._id && (
           <CardActions>
             <Link to={`/ad/edit/${data._id}`} element={<EditAnnouncment />}>
               <Button endIcon={<SendIcon />} variant="outlined" size="small">
                 Edit
               </Button>
             </Link>
-            <Link to={`/ad/remove/${data._id}`} element={<DeleteAd />}>
+            <Link to={`/ad/remove/${data._id}`} element={<DeleteAd data={data} />}>
               <Button startIcon={<DeleteIcon />} color="error" variant="outlined" size="small">
                 Delete
               </Button>
