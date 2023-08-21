@@ -2,7 +2,7 @@ import { httpClient } from '../api/httpClient';
 import { API_URL } from '../config';
 
 /* SELECTORS */
-export const getUserData = (state) => state.user;
+export const getUserData = (state) => state.user?.user;
 export const getUserAvatar = (state) => state.user.user?.avatar;
 export const getUserLoadingState = (state) => state.user.loading;
 export const getUserErrorState = (state) => state.user.error;
@@ -64,7 +64,7 @@ export const getUserRequest = () => {
       const data = await httpClient.get(`${API_URL}/api/user`);
       dispatch(loadUser(data));
       const storageData = { avatar: data.avatar, id: data._id };
-      localStorage.setItem('loginUser', JSON.stringify(storageData));
+      sessionStorage.setItem('loginUser', JSON.stringify(storageData));
       dispatch(endUserRequest());
     } catch (error) {
       const action = errorUserRequest({ message: error.message });
@@ -79,7 +79,7 @@ export const logoutUserRequest = () => {
     try {
       await httpClient.post(`${API_URL}/auth/logout`);
       dispatch(logoutUser());
-      localStorage.removeItem('loginUser');
+      sessionStorage.removeItem('loginUser');
       dispatch(endLogoutUserRequest());
     } catch (error) {
       const action = errorUserRequest({ message: error.message });

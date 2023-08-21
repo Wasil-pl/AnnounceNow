@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
 function App() {
-  const user = JSON.parse(localStorage.getItem('loginUser'));
+  const user = JSON.parse(sessionStorage.getItem('loginUser'));
   const dispatch = useDispatch();
 
   useEffect(() => {

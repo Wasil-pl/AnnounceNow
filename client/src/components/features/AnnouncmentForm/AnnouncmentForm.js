@@ -23,7 +23,7 @@ import { getUserLoggedState } from '../../../redux/UserRedux';
 const AnnouncmentForm = ({ data }) => {
   const logged = useSelector(getUserLoggedState);
 
-  const user = JSON.parse(localStorage.getItem('loginUser'));
+  const user = JSON.parse(sessionStorage.getItem('loginUser'));
 
   return (
     <div className={styles.cardContainer}>

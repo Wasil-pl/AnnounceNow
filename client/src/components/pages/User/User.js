@@ -23,7 +23,7 @@ const User = () => {
     <Container>
       {errorBox && <ErrorLoad errorMsg={errorBox} />}
       {isLoading && !errorBox && <Loader />}
-      {!isLoading && <MyAccountForm user={user} />}
+      {!isLoading && user && <MyAccountForm user={user} />}
     </Container>
   );
 };

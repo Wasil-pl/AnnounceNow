@@ -13,7 +13,7 @@ const MainMenu = () => {
 
   const logged = useSelector(getUserLoggedState);
   const avatar = useSelector(getUserAvatar);
-  const userFromLocalStorage = localStorage.getItem('loginUser');
+  const userFromLocalStorage = sessionStorage.getItem('loginUser');
   const user = userFromLocalStorage ? JSON.parse(userFromLocalStorage) : false;
 
   const handleAvatarClick = (event) => {

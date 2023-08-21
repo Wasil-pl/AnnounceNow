@@ -23,7 +23,6 @@ const DeleteAd = () => {
   }, [dispatch, id]);
 
   const ad = useSelector(getAdById);
-  console.log('ad:', ad);
 
   const handleSubmit = (e) => {
     e.preventDefault();

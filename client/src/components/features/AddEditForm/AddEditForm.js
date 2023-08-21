@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, TextField, Typography, Container, Grid, Chip, Input, Box, CssBaseline, Avatar } from '@mui/material';
 import styles from './AddEditForm.module.scss';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import { useForm } from 'react-hook-form';
+import { Error, errorMessages, patterns } from '../ErrorMessages/ErrorMessages';
 
 const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
   const [title, setTitle] = useState(props.title || '');
@@ -11,6 +13,11 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
   const [picture, setPicture] = useState(props.picture || null);
   const [selectedFileName, setSelectedFileName] = useState(props.picture || '');
   const date = props.date || new Date().toISOString().slice(0, 10);
+  const {
+    register,
+    handleSubmit: validate,
+    formState: { errors },
+  } = useForm();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -54,20 +61,38 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
         <Typography component="h1" variant="h5">
           {pageTitle}
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={validate(handleSubmit)}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                {...register('title', {
+                  required: errorMessages.required,
+                  maxLength: {
+                    value: patterns.titleMaxLength,
+                    message: errorMessages.maxLength(patterns.titleMaxLength),
+                  },
+                  pattern: { value: patterns.textPattern, message: errorMessages.textPattern },
+                })}
                 name="title"
                 label="Title"
                 variant="outlined"
                 value={title}
                 fullWidth
+                error={!!errors.title}
+                helperText={errors.title?.message}
                 onChange={(event) => setTitle(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                {...register('content', {
+                  required: errorMessages.required,
+                  maxLength: {
+                    value: patterns.contentMaxLength,
+                    message: errorMessages.maxLength(patterns.contentMaxLength),
+                  },
+                  pattern: { value: patterns.textPattern, message: errorMessages.textPattern },
+                })}
                 name="content"
                 label="Content"
                 variant="outlined"
@@ -76,6 +101,8 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
                 multiline
                 rows={4}
                 onChange={(event) => setContent(event.target.value)}
+                error={!!errors.content}
+                helperText={errors.content?.message}
               />
             </Grid>
             <Grid item xs={12}>
@@ -86,13 +113,16 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
                 <Button className={styles.pictureBtn} component="label" variant="contained" sx={{ mt: 3 }}>
                   Add Picture
                   <Input
+                    {...register('file', {
+                      required: errorMessages.requiredFile,
+                    })}
                     type="file"
-                    accept=".jpg, .jpeg, .png"
-                    required
+                    accept={patterns.acceptedFileTypes.join(',')}
                     onChange={handleFileChange}
                     sx={{ display: 'none' }}
                   />
                 </Button>
+                {errors.file && <Error>{errors.file.message}</Error>}
                 {selectedFileName && (
                   <Chip
                     className={styles.chip}
@@ -106,22 +136,34 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                {...register('price', {
+                  required: errorMessages.required,
+                  pattern: { value: patterns.validatePrice, message: errorMessages.validatePrice },
+                })}
                 name="price"
                 label="Price"
                 variant="outlined"
                 value={price}
                 fullWidth
                 onChange={(event) => setPrice(event.target.value)}
+                error={!!errors.price}
+                helperText={errors.price?.message}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                {...register('address', {
+                  required: errorMessages.required,
+                  pattern: { value: patterns.textPattern, message: errorMessages.textPattern },
+                })}
                 name="address"
                 label="Address"
                 variant="outlined"
                 value={address}
                 fullWidth
                 onChange={(event) => setAddress(event.target.value)}
+                error={!!errors.address}
+                helperText={errors.address?.message}
               />
             </Grid>
             <Grid item xs={12}>

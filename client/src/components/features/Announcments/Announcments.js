@@ -7,7 +7,6 @@ import ErrorLoad from '../ErrorLoad/ErrorLoad';
 
 const Announcments = () => {
   const adsData = useSelector(getAllData);
-  console.log('adsData:', adsData);
   const isLoading = useSelector(getLoadingState);
   const errorBox = useSelector(getErrorState);
 

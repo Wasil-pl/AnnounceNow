@@ -10,14 +10,14 @@ const MyAccountForm = ({ user }) => {
       <Card>
         <CardHeader
           className={styles.card}
-          avatar={<Avatar src={AVATARS_URL + user.user.avatar} alt={user.user.login.charAt(0).toUpperCase()} />}
-          title={user.user.login}
+          avatar={<Avatar src={AVATARS_URL + user.avatar} alt={user.login.charAt(0).toUpperCase()} />}
+          title={user.login}
         />
         <CardContent>
           <div>
             <Phone />
             <Typography variant="body2" color="text.secondary">
-              {user.user.phoneNumber}
+              {user.phoneNumber}
             </Typography>
           </div>
         </CardContent>
