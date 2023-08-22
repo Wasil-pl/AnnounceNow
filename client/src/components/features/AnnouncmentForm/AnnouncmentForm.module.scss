@@ -28,7 +28,7 @@
       padding: 0 16px 16px 16px;
     }
 
-    .cardActions {
+    .CardContent {
       display: flex;
       align-items: flex-start;
       flex-direction: column;
@@ -36,8 +36,22 @@
         margin: 0;
       }
 
-      .actions {
+      .userContent {
         font-weight: bold;
+      }
+
+      .seller {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .login {
+        font-size: 18px;
+      }
+
+      .sellerBtn {
+        font-size: 12px;
+        margin: 0 0 5px 15px;
       }
     }
   }

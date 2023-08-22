@@ -6,6 +6,7 @@ const initialState = {
     list: [],
     selectedAd: null,
     searchResult: [],
+    userAds: [],
   },
 
   user: {

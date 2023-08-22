@@ -30,7 +30,7 @@ exports.loadOne = async (req, res) => {
 
 exports.loadBySeller = async (req, res) => {
   try {
-    const announcement = await Announcement.find({ seller: req.params.id }).populate({
+    const announcement = await Announcement.find({ seller: req.params.seller }).populate({
       path: 'seller',
       select: '-password',
     });

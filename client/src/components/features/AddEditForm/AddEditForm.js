@@ -13,6 +13,7 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
   const [picture, setPicture] = useState(props.picture || null);
   const [selectedFileName, setSelectedFileName] = useState(props.picture || '');
   const date = props.date || new Date().toISOString().slice(0, 10);
+  const [fileError, setFileError] = useState(null);
   const {
     register,
     handleSubmit: validate,
@@ -30,8 +31,11 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
     setSelectedFileName('');
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
+    if (!patterns.acceptedFileTypes.includes(picture.type)) {
+      setFileError(true);
+      return;
+    }
 
     const formData = new FormData();
     formData.append('title', title);
@@ -123,6 +127,7 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
                   />
                 </Button>
                 {errors.file && <Error>{errors.file.message}</Error>}
+                {fileError && <Error>{errorMessages.validateFile}</Error>}
                 {selectedFileName && (
                   <Chip
                     className={styles.chip}

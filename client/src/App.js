@@ -16,6 +16,7 @@ import SearchResult from './components/pages/SearchResult/SearchResult';
 import { changeUserState } from './redux/UserRedux';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import SellerAds from './components/pages/SellerAds/SellerAds';
 
 function App() {
   const user = JSON.parse(sessionStorage.getItem('loginUser'));
@@ -36,6 +37,7 @@ function App() {
         <Route path="/ad/edit/:id" element={<EditAnnouncment />} />
         <Route path="/ad/remove/:id" element={<DeleteAd />} />
         <Route path="/ad/search/:searchPhrase" element={<SearchResult />} />
+        <Route path="/ad/seller/:id" element={<SellerAds />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import UserForm from '../UserForm.js/UserForm';
+import UserForm from '../UserForm/UserForm';
 import { addUserRequest, getUserErrorState, getUserLoadingState } from '../../../redux/UserRedux';
 
 import ErrorLoad from '../ErrorLoad/ErrorLoad';
@@ -28,7 +28,7 @@ const Register = () => {
       {errorBox && <ErrorLoad errorMsg={errorBox} />}
       {isLoading && !errorBox && <Loader />}
       {success && !isLoading && !errorBox && <Success successMsg={successMsg} />}
-      {!isLoading && !errorBox && !success && <UserForm action={handleSubmit} actionText="Sign in" register />}
+      {!isLoading && !errorBox && !success && <UserForm action={handleSubmit} actionText="Sign in" registerUser />}
     </span>
   );
 };

@@ -8,6 +8,7 @@ export const getAdById = (state) => state.ads.selectedAd;
 export const getLoadingState = (state) => state.ads.loading;
 export const getErrorState = (state) => state.ads.error;
 export const getSearchResult = (state) => state.ads.searchResult;
+export const getUserAds = (state) => state.ads.userAds;
 
 /* ACTIONS */
 export const startRequest = (payload) => ({ payload, type: START_REQUEST });
@@ -16,6 +17,7 @@ export const endRequest = (payload) => ({ payload, type: END_REQUEST });
 export const loadAds = (payload) => ({ payload, type: LOAD_ADS });
 export const loadAd = (payload) => ({ payload, type: LOAD_AD });
 export const searchAd = (payload) => ({ payload, type: SEARCH_AD });
+export const userAds = (payload) => ({ payload, type: USER_ADS });
 export const addAd = (payload) => ({ payload, type: ADD_AD_REQUEST });
 export const editAd = (payload) => ({ payload, type: EDIT_AD_REQUEST });
 export const deleteAd = (payload) => ({ payload, type: DELETE_AD_REQUEST });
@@ -27,6 +29,7 @@ const ERROR_REQUEST = createActionName('ERROR_REQUEST');
 const LOAD_ADS = createActionName('LOAD_ADS');
 const LOAD_AD = createActionName('LOAD_AD');
 const SEARCH_AD = createActionName('SEARCH_AD');
+const USER_ADS = createActionName('USER_ADS');
 const ADD_AD_REQUEST = createActionName('ADD_AD_REQUEST');
 const EDIT_AD_REQUEST = createActionName('EDIT_AD_REQUEST');
 const DELETE_AD_REQUEST = createActionName('DELETE_AD_REQUEST');
@@ -67,6 +70,20 @@ export const searchAdRequest = (searchPhrase) => {
     try {
       const data = await httpClient.get(`${API_URL}/api/ads/search/${searchPhrase}`);
       dispatch(searchAd(data));
+      dispatch(endRequest());
+    } catch (error) {
+      const action = errorRequest({ message: error.message });
+      dispatch(action);
+    }
+  };
+};
+
+export const userAdsRequest = (id) => {
+  return async (dispatch) => {
+    dispatch(startRequest());
+    try {
+      const data = await httpClient.get(`${API_URL}/api/ads/seller/${id}`);
+      dispatch(userAds(data));
       dispatch(endRequest());
     } catch (error) {
       const action = errorRequest({ message: error.message });
@@ -122,7 +139,15 @@ export const deleteAdRequest = (id) => {
 
 /* REDUCER */
 export const adsReducer = (
-  statePart = { list: [], selectedAd: null, searchResult: [], error: null, loading: false, success: false },
+  statePart = {
+    list: [],
+    selectedAd: null,
+    searchResult: [],
+    userAds: [],
+    error: null,
+    loading: false,
+    success: false,
+  },
   action
 ) => {
   switch (action.type) {
@@ -134,6 +159,9 @@ export const adsReducer = (
 
     case SEARCH_AD:
       return { ...statePart, searchResult: [...action.payload] };
+
+    case USER_ADS:
+      return { ...statePart, userAds: [...action.payload] };
 
     case ADD_AD_REQUEST:
       console.log('action.payload:', action.payload);

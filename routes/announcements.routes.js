@@ -14,7 +14,7 @@ router.get('/ads/:id', GetAdsController.loadOne);
 router.post('/ads', authMiddleware, imageUpload.single('picture'), AddAdsController.add);
 router.put('/ads/:id', authMiddleware, imageUpload.single('picture'), PutAdsController.edit);
 router.delete('/ads/:id', authMiddleware, DeleteAdsController.delete);
-router.get('/ads/seller/:id', GetAdsController.loadBySeller);
+router.get('/ads/seller/:seller', GetAdsController.loadBySeller);
 router.get('/ads/search/:searchPhrase', GetAdsController.search);
 
 module.exports = router;

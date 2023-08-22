@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom';
 import DeleteAd from '../DeleteAd/DeleteAd';
 import { useSelector } from 'react-redux';
 import { getUserLoggedState } from '../../../redux/UserRedux';
+import SellerAds from '../../pages/SellerAds/SellerAds';
 
 const AnnouncmentForm = ({ data }) => {
   const logged = useSelector(getUserLoggedState);
@@ -51,18 +52,23 @@ const AnnouncmentForm = ({ data }) => {
           </Typography>
         </CardContent>
         <Divider />
-        <CardContent className={styles.cardActions}>
+        <CardContent className={styles.CardContent}>
           <Typography variant="body2" color="text.secondary">
-            <span className={styles.actions}>Seller:</span> {data.seller.login}
+            <span className={styles.seller}>Seller: </span> <span className={styles.login}>{data.seller.login}</span>{' '}
+            <Link to={`/ad/seller/${data.seller._id}`} element={<SellerAds />}>
+              <Button className={styles.sellerBtn} endIcon={<SendIcon />} variant="outlined" size="small">
+                show more products from this user
+              </Button>
+            </Link>
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <span className={styles.actions}>Phone:</span> {data.seller.phoneNumber}
+            <span className={styles.userContent}>Phone:</span> {data.seller.phoneNumber}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <span className={styles.actions}>Address:</span> {data.address}
+            <span className={styles.userContent}>Address:</span> {data.address}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <span className={styles.actions}>Ad posting date:</span> {data.date}
+            <span className={styles.userContent}>Ad posting date:</span> {data.date}
           </Typography>
         </CardContent>
         <Divider />

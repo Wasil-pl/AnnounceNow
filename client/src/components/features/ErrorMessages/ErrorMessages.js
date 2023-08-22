@@ -8,6 +8,8 @@ export const errorMessages = {
   dateFormat: 'Invalid date format. Please enter a date in the format dd-mm-yyyy.',
   textPattern: 'This field can contain only letters, numbers, spaces and special characters: . , - _ ( )',
   validatePrice: 'Invalid price, can contain only numbers and . ,',
+  validateFile: 'Invalid file type',
+  validatePhoneNumber: 'Invalid phone number, mast contain 9 digits',
   maxLength: (maxLength) => `This field can contain max ${maxLength} characters`,
 };
 
@@ -23,5 +25,5 @@ export const patterns = {
   contentMaxLength: 1000,
   validatePhoneNumber: /^\d{9}$/,
   validatePrice: /^[1-9\d.,]+$/,
-  acceptedFileTypes: ['image/png', 'image/gif', 'image/jpeg'],
+  acceptedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
 };

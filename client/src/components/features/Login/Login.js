@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import UserForm from '../UserForm.js/UserForm';
+import UserForm from '../UserForm/UserForm';
 import { getUserErrorState, getUserLoadingState, getUserLoggedState, loginUserRequest } from '../../../redux/UserRedux';
 
 import Loader from '../Loader/Loader';
