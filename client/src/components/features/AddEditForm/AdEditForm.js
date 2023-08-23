@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Button, TextField, Typography, Container, Grid, Chip, Input, Box, CssBaseline, Avatar } from '@mui/material';
-import styles from './AddEditForm.module.scss';
+import styles from './AdEditForm.module.scss';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import { useForm } from 'react-hook-form';
-import { Error, errorMessages, patterns } from '../ErrorMessages/ErrorMessages';
+import { errorMessages, patterns, Error } from '../../../consts';
 
-const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
+const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
   const [title, setTitle] = useState(props.title || '');
   const [Content, setContent] = useState(props.content || '');
   const [price, setPrice] = useState(props.price || '');
@@ -183,4 +183,4 @@ const AddEditForm = ({ pageTitle, action, actionText, ...props }) => {
   );
 };
 
-export default AddEditForm;
+export default AdEditForm;

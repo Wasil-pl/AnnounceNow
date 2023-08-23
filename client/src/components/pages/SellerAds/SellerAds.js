@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getErrorState, getLoadingState, getUserAds, userAdsRequest } from '../../../redux/adsRedux';
-import ErrorLoad from '../../features/ErrorLoad/ErrorLoad';
-import Loader from '../../features/Loader/Loader';
+import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
+import Loader from '../../common/Loader/Loader';
 import AdThumb from '../../features/AdThumb/AdThumb';
 
 const SellerAds = () => {

@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import AddEditForm from '../../features/AddEditForm/AddEditForm';
+import AddEditForm from '../../features/AddEditForm/AdEditForm';
 import { addAdRequest, getErrorState, getLoadingState } from '../../../redux/adsRedux';
-import ErrorLoad from '../../features/ErrorLoad/ErrorLoad';
-import Loader from '../../features/Loader/Loader';
 import { useState } from 'react';
-import Success from '../../features/Success/Success';
+import Loader from '../../common/Loader/Loader';
+import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
+import Success from '../../common/Success/Success';
 
 const AddAnnouncment = () => {
   const [success, setSuccess] = useState(false);

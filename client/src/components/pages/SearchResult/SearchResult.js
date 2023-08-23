@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getErrorState, getLoadingState, getSearchResult, searchAdRequest } from '../../../redux/adsRedux';
 import { Container } from '@mui/material';
-import ErrorLoad from '../../features/ErrorLoad/ErrorLoad';
 import AdThumb from '../../features/AdThumb/AdThumb';
-import Loader from '../../features/Loader/Loader';
+import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
+import Loader from '../../common/Loader/Loader';
 
 const SearchResult = () => {
   const { searchPhrase } = useParams();

@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import UserForm from '../UserForm/UserForm';
 import { getUserErrorState, getUserLoadingState, getUserLoggedState, loginUserRequest } from '../../../redux/UserRedux';
-
-import Loader from '../Loader/Loader';
-import ErrorLoad from '../ErrorLoad/ErrorLoad';
-import Success from '../Success/Success';
+import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
+import Loader from '../../common/Loader/Loader';
+import Success from '../../common/Success/Success';
+import LoginForm from '../LoginForm/LoginForm';
+import { Container } from '@mui/material';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -20,12 +20,12 @@ const Login = () => {
   const logged = useSelector(getUserLoggedState);
 
   return (
-    <span>
+    <Container>
       {errorBox && <ErrorLoad errorMsg={errorBox} />}
       {isLoading && !errorBox && <Loader />}
       {logged && <Success successMsg={successMsg} />}
-      <UserForm action={handleSubmit} actionText="Login" />
-    </span>
+      <LoginForm action={handleSubmit} actionText="Login" />
+    </Container>
   );
 };
 export default Login;

@@ -2,9 +2,9 @@ import React from 'react';
 import { AVATARS_URL } from '../../../config';
 import { Avatar, Card, CardContent, CardHeader, Typography } from '@mui/material';
 import { Phone } from '@mui/icons-material';
-import styles from './MyAccountForm.module.scss';
+import styles from './MyAccountData.module.scss';
 
-const MyAccountForm = ({ user }) => {
+const MyAccountData = ({ user }) => {
   return (
     <div className={styles.cardContainer}>
       <Card>
@@ -26,4 +26,4 @@ const MyAccountForm = ({ user }) => {
   );
 };
 
-export default MyAccountForm;
+export default MyAccountData;

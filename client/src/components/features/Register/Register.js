@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import UserForm from '../UserForm/UserForm';
 import { addUserRequest, getUserErrorState, getUserLoadingState } from '../../../redux/UserRedux';
-
-import ErrorLoad from '../ErrorLoad/ErrorLoad';
-import Loader from '../Loader/Loader';
+import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
+import Loader from '../../common/Loader/Loader';
+import Success from '../../common/Success/Success';
 import { useState } from 'react';
-import Success from '../Success/Success';
+import RegisterForm from '../RegisterForm/RegisterForm';
 
 const Register = () => {
   const [success, setSuccess] = useState(false);
@@ -28,7 +27,7 @@ const Register = () => {
       {errorBox && <ErrorLoad errorMsg={errorBox} />}
       {isLoading && !errorBox && <Loader />}
       {success && !isLoading && !errorBox && <Success successMsg={successMsg} />}
-      {!isLoading && !errorBox && !success && <UserForm action={handleSubmit} actionText="Sign in" registerUser />}
+      {!isLoading && !errorBox && !success && <RegisterForm action={handleSubmit} />}
     </span>
   );
 };

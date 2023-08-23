@@ -6,9 +6,9 @@ import { Avatar, Button, Card, CardContent, CardHeader, Typography } from '@mui/
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AVATARS_URL } from '../../../config';
 import styles from './DeleteAd.module.scss';
-import ErrorLoad from '../ErrorLoad/ErrorLoad';
-import Loader from '../Loader/Loader';
-import Success from '../Success/Success';
+import Loader from '../../common/Loader/Loader';
+import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
+import Success from '../../common/Success/Success';
 
 const DeleteAd = () => {
   const [success, setSuccess] = useState(false);

@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { AppBar, Avatar, Menu, MenuItem, Toolbar, ListItemIcon, Divider, Button } from '@mui/material';
 import { PersonAdd, Logout, Login } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { menuPaperProps } from './MenuSettings';
 import styles from './MainMenu.module.scss';
 import { AVATARS_URL } from '../../../config';
-import { useSelector } from 'react-redux';
-import { getUserAvatar, getUserLoggedState } from '../../../redux/UserRedux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserAvatar, getUserLoggedState, logoutUserRequest } from '../../../redux/UserRedux';
 
 const MainMenu = () => {
   const [avatarAnchorEl, setAvatarAnchorEl] = useState(null);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const logged = useSelector(getUserLoggedState);
   const avatar = useSelector(getUserAvatar);
   const userFromLocalStorage = sessionStorage.getItem('loginUser');
@@ -22,6 +23,12 @@ const MainMenu = () => {
 
   const handleClose = () => {
     setAvatarAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUserRequest());
+    setAvatarAnchorEl(null);
+    navigate('/');
   };
 
   return (
@@ -59,45 +66,38 @@ const MainMenu = () => {
       >
         {!!logged && (
           <span>
-            <MenuItem>
+            <MenuItem onClick={handleClose} component={Link} to="/user">
               <ListItemIcon>
                 <Avatar src={avatar ? AVATARS_URL + avatar : AVATARS_URL + user.avatar} alt={'A'} />
-                <Link to="/user" onClick={handleClose}>
-                  My account
-                </Link>
+                My account
               </ListItemIcon>
             </MenuItem>
             <Divider />
           </span>
         )}
-        <MenuItem onClick={handleClose}>
+
+        <MenuItem onClick={handleClose} component={Link} to="/register">
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
-          <Link to="/register" onClick={handleClose}>
-            Add another account
-          </Link>
+          Add another account
         </MenuItem>
+
         {!!logged && (
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleLogout}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
-
-            <Link to="/logout" onClick={handleClose}>
-              Logout
-            </Link>
+            Logout
           </MenuItem>
         )}
+
         {!logged && (
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={handleClose} component={Link} to="/login">
             <ListItemIcon>
               <Login fontSize="small" />
             </ListItemIcon>
-
-            <Link to="/login" onClick={handleClose}>
-              Login
-            </Link>
+            Login
           </MenuItem>
         )}
       </Menu>

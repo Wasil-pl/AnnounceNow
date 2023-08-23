@@ -4,9 +4,9 @@ import { getUserData, getUserRequest } from '../../../redux/UserRedux';
 import { Container } from '@mui/material';
 
 import { getErrorState, getLoadingState } from '../../../redux/adsRedux';
-import ErrorLoad from '../../features/ErrorLoad/ErrorLoad';
-import Loader from '../../features/Loader/Loader';
-import MyAccountForm from '../../features/MyAccountForm/MyAccountForm';
+import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
+import Loader from '../../common/Loader/Loader';
+import MyAccountData from '../../features/MyAccountData/MyAccountData';
 
 const User = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const User = () => {
     <Container>
       {errorBox && <ErrorLoad errorMsg={errorBox} />}
       {isLoading && !errorBox && <Loader />}
-      {!isLoading && user && <MyAccountForm user={user} />}
+      {!isLoading && user && <MyAccountData user={user} />}
     </Container>
   );
 };

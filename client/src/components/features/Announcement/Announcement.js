@@ -2,9 +2,9 @@ import { useParams } from 'react-router-dom';
 import { getAdById, getErrorState, getLoadingState, loadAdByIdRequest } from '../../../redux/adsRedux';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import Loader from '../Loader/Loader';
-import ErrorLoad from '../ErrorLoad/ErrorLoad';
 import AnnouncmentForm from '../AnnouncmentForm/AnnouncmentForm';
+import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
+import Loader from '../../common/Loader/Loader';
 
 const Announcment = () => {
   const { id } = useParams();

@@ -9,7 +9,6 @@ import EditAnnouncment from './components/pages/EditAnnouncment/EditAnnouncment'
 import DeleteAd from './components/features/DeleteAd/DeleteAd';
 import Register from './components/features/Register/Register';
 import Login from './components/features/Login/Login';
-import Logout from './components/features/Logout/Logout';
 import User from './components/pages/User/User';
 import NotFoundPage from './components/pages/NotFound/NotFoundPage';
 import SearchResult from './components/pages/SearchResult/SearchResult';
@@ -40,7 +39,6 @@ function App() {
         <Route path="/ad/seller/:id" element={<SellerAds />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={<Logout />} />
         <Route path="/user" element={<User />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
