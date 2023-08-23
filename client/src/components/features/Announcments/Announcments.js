@@ -1,9 +1,7 @@
 import { useSelector } from 'react-redux';
 import AdThumb from '../AdThumb/AdThumb';
 import { getAllData, getErrorState, getLoadingState } from '../../../redux/adsRedux';
-import { Container } from '@mui/material';
-import Loader from '../../common/Loader/Loader';
-import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
+import { Alert, AlertTitle, Box, CircularProgress, Container, Stack } from '@mui/material';
 
 const Announcments = () => {
   const adsData = useSelector(getAllData);
@@ -12,8 +10,27 @@ const Announcments = () => {
 
   return (
     <Container>
-      {errorBox && <ErrorLoad errorMsg={errorBox} />}
-      {isLoading && !errorBox && <Loader />}
+      <Stack
+        sx={{
+          p: 2,
+          margin: 'auto',
+          maxWidth: 400,
+        }}
+        spacing={1}
+      >
+        {errorBox && (
+          <Alert variant="filled" severity="error">
+            <AlertTitle>Error</AlertTitle>
+            <strong>{errorBox}</strong>
+          </Alert>
+        )}
+
+        {isLoading && !errorBox && (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress />
+          </Box>
+        )}
+      </Stack>
       {!isLoading && !errorBox && <AdThumb data={adsData} />}
     </Container>
   );

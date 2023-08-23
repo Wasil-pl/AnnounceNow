@@ -1,10 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { addUserRequest, getUserErrorState, getUserLoadingState } from '../../../redux/UserRedux';
-import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
-import Loader from '../../common/Loader/Loader';
-import Success from '../../common/Success/Success';
 import { useState } from 'react';
 import RegisterForm from '../RegisterForm/RegisterForm';
+import { Alert, AlertTitle, Box, CircularProgress, Container, Stack } from '@mui/material';
+import { successMessages } from '../../../consts';
 
 const Register = () => {
   const [success, setSuccess] = useState(false);
@@ -20,15 +19,39 @@ const Register = () => {
     }
   };
 
-  const successMsg = 'You are registered';
-
   return (
-    <span>
-      {errorBox && <ErrorLoad errorMsg={errorBox} />}
-      {isLoading && !errorBox && <Loader />}
-      {success && !isLoading && !errorBox && <Success successMsg={successMsg} />}
+    <Container>
+      <Stack
+        sx={{
+          p: 2,
+          margin: 'auto',
+          maxWidth: 400,
+        }}
+        spacing={1}
+      >
+        {errorBox && (
+          <Alert variant="filled" severity="error">
+            <AlertTitle>Error</AlertTitle>
+            <strong>{errorBox}</strong>
+          </Alert>
+        )}
+
+        {success && !isLoading && !errorBox && (
+          <Alert variant="filled" severity="success">
+            <AlertTitle>Success</AlertTitle>
+            <strong>{successMessages.register}</strong>
+          </Alert>
+        )}
+
+        {isLoading && !errorBox && (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress />
+          </Box>
+        )}
+      </Stack>
+
       {!isLoading && !errorBox && !success && <RegisterForm action={handleSubmit} />}
-    </span>
+    </Container>
   );
 };
 

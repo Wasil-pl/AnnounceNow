@@ -2,13 +2,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { deleteAdRequest, getAdById, getErrorState, getLoadingState, loadAdByIdRequest } from '../../../redux/adsRedux';
-import { Avatar, Button, Card, CardContent, CardHeader, Typography } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { AVATARS_URL } from '../../../config';
-import styles from './DeleteAd.module.scss';
-import Loader from '../../common/Loader/Loader';
-import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
-import Success from '../../common/Success/Success';
+import { Container, Stack } from '@mui/material';
+import { Alert, AlertTitle, Box, CircularProgress } from '@mui/material';
+import DeleteConfirm from '../DeleteConfirm/DeleteConfirm';
+import { successMessages } from '../../../consts';
 
 const DeleteAd = () => {
   const [success, setSuccess] = useState(false);
@@ -24,9 +21,8 @@ const DeleteAd = () => {
 
   const ad = useSelector(getAdById);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(deleteAdRequest(id));
+  const handleSubmit = (deletedId) => {
+    dispatch(deleteAdRequest(deletedId));
 
     if (!errorBox) {
       setSuccess(true);
@@ -35,30 +31,39 @@ const DeleteAd = () => {
 
   if (!ad) return <div> No data </div>;
 
-  const successMsg = 'Post deleted successfully';
-
-  if (errorBox) return <ErrorLoad errorMsg={errorBox} />;
-  if (isLoading && !errorBox) return <Loader />;
-  if (success && !isLoading && !errorBox) return <Success successMsg={successMsg} />;
-
   return (
-    <div className={styles.cardContainer}>
-      <Card className={styles.card}>
-        <CardHeader
-          className={styles.cardHeader}
-          avatar={<Avatar src={AVATARS_URL + ad.seller.avatar} alt={ad.seller.login.charAt(0).toUpperCase()} />}
-          title={ad.seller.login}
-        />
-        <CardContent className={styles.CardContent}>
-          <Typography variant="body2" color="text.secondary">
-            Are you sure you want to delete this Ad?
-          </Typography>
-          <Button onClick={(e) => handleSubmit(e)} startIcon={<DeleteIcon />} variant="contained" color="error">
-            Delete
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
+    <Container>
+      <Stack
+        sx={{
+          p: 2,
+          margin: 'auto',
+          maxWidth: 400,
+        }}
+        spacing={1}
+      >
+        {errorBox && (
+          <Alert variant="filled" severity="error">
+            <AlertTitle>Error</AlertTitle>
+            <strong>{errorBox}</strong>
+          </Alert>
+        )}
+
+        {success && !isLoading && !errorBox && (
+          <Alert variant="filled" severity="success">
+            <AlertTitle>Success</AlertTitle>
+            <strong>{successMessages.delete}</strong>
+          </Alert>
+        )}
+
+        {isLoading && !errorBox && (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress />
+          </Box>
+        )}
+      </Stack>
+
+      {!isLoading && !errorBox && !success && <DeleteConfirm action={handleSubmit} deleteItem={ad} />}
+    </Container>
   );
 };
 

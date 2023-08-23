@@ -1,10 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserErrorState, getUserLoadingState, getUserLoggedState, loginUserRequest } from '../../../redux/UserRedux';
-import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
-import Loader from '../../common/Loader/Loader';
-import Success from '../../common/Success/Success';
 import LoginForm from '../LoginForm/LoginForm';
-import { Container } from '@mui/material';
+import { Alert, AlertTitle, Box, CircularProgress, Container, Stack } from '@mui/material';
+import { successMessages } from '../../../consts';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -13,18 +11,42 @@ const Login = () => {
     dispatch(loginUserRequest(user));
   };
 
-  const successMsg = 'You are logged in';
-
   const isLoading = useSelector(getUserLoadingState);
   const errorBox = useSelector(getUserErrorState);
   const logged = useSelector(getUserLoggedState);
 
   return (
     <Container>
-      {errorBox && <ErrorLoad errorMsg={errorBox} />}
-      {isLoading && !errorBox && <Loader />}
-      {logged && <Success successMsg={successMsg} />}
-      <LoginForm action={handleSubmit} actionText="Login" />
+      <Stack
+        sx={{
+          p: 2,
+          margin: 'auto',
+          maxWidth: 400,
+        }}
+        spacing={1}
+      >
+        {errorBox && (
+          <Alert variant="filled" severity="error">
+            <AlertTitle>Error</AlertTitle>
+            <strong>{errorBox}</strong>
+          </Alert>
+        )}
+
+        {logged && !isLoading && !errorBox && (
+          <Alert variant="filled" severity="success">
+            <AlertTitle>Success</AlertTitle>
+            <strong>{successMessages.login}</strong>
+          </Alert>
+        )}
+
+        {isLoading && !errorBox && (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress />
+          </Box>
+        )}
+      </Stack>
+
+      {!isLoading && !errorBox && !logged && <LoginForm action={handleSubmit} actionText="Login" />}
     </Container>
   );
 };

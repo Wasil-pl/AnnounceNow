@@ -2,9 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getErrorState, getLoadingState, getUserAds, userAdsRequest } from '../../../redux/adsRedux';
-import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
-import Loader from '../../common/Loader/Loader';
 import AdThumb from '../../features/AdThumb/AdThumb';
+import { Alert, AlertTitle, Box, CircularProgress, Container, Stack } from '@mui/material';
 
 const SellerAds = () => {
   const { id } = useParams();
@@ -19,11 +18,31 @@ const SellerAds = () => {
   const errorBox = useSelector(getErrorState);
 
   return (
-    <span>
-      {errorBox && <ErrorLoad errorMsg={errorBox} />}
-      {isLoading && !errorBox && <Loader />}
+    <Container>
+      <Stack
+        sx={{
+          p: 2,
+          margin: 'auto',
+          maxWidth: 400,
+        }}
+        spacing={1}
+      >
+        {errorBox && (
+          <Alert variant="filled" severity="error">
+            <AlertTitle>Error</AlertTitle>
+            <strong>{errorBox}</strong>
+          </Alert>
+        )}
+
+        {isLoading && !errorBox && (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress />
+          </Box>
+        )}
+      </Stack>
+
       {!isLoading && !errorBox && <AdThumb data={adData} />}
-    </span>
+    </Container>
   );
 };
 

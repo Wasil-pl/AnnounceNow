@@ -27,3 +27,11 @@ export const patterns = {
   validatePrice: /^[1-9\d.,]+$/,
   acceptedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
 };
+
+export const successMessages = {
+  edit: 'Ad edited successfully',
+  add: 'Ad added successfully',
+  register: 'You are registered',
+  login: 'You are logged in',
+  delete: 'Ad deleted successfully',
+};

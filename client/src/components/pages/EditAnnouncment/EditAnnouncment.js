@@ -3,9 +3,8 @@ import { useParams } from 'react-router-dom';
 import { editAdRequest, getAdById, getErrorState, getLoadingState, loadAdByIdRequest } from '../../../redux/adsRedux';
 import AddEditForm from '../../features/AddEditForm/AdEditForm';
 import { useEffect, useState } from 'react';
-import Loader from '../../common/Loader/Loader';
-import ErrorLoad from '../../common/ErrorLoad/ErrorLoad';
-import Success from '../../common/Success/Success';
+import { Alert, AlertTitle, Box, CircularProgress, Container, Stack } from '@mui/material';
+import { successMessages } from '../../../consts';
 
 const EditAnnouncment = () => {
   const [success, setSuccess] = useState(false);
@@ -30,13 +29,37 @@ const EditAnnouncment = () => {
 
   if (!adData) return <div> No data </div>;
 
-  const successMsg = 'Post edited successfully';
-
   return (
-    <span>
-      {errorBox && <ErrorLoad errorMsg={errorBox} />}
-      {isLoading && !errorBox && <Loader />}
-      {success && !isLoading && !errorBox && <Success successMsg={successMsg} />}
+    <Container>
+      <Stack
+        sx={{
+          p: 2,
+          margin: 'auto',
+          maxWidth: 400,
+        }}
+        spacing={1}
+      >
+        {errorBox && (
+          <Alert variant="filled" severity="error">
+            <AlertTitle>Error</AlertTitle>
+            <strong>{errorBox}</strong>
+          </Alert>
+        )}
+
+        {success && !isLoading && !errorBox && (
+          <Alert variant="filled" severity="success">
+            <AlertTitle>Success</AlertTitle>
+            <strong>{successMessages.edit}</strong>
+          </Alert>
+        )}
+
+        {isLoading && !errorBox && (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress />
+          </Box>
+        )}
+      </Stack>
+
       {!isLoading && !errorBox && !success && (
         <AddEditForm
           action={handleSubmit}
@@ -50,7 +73,7 @@ const EditAnnouncment = () => {
           picture={adData.picture}
         />
       )}
-    </span>
+    </Container>
   );
 };
 
