@@ -46,7 +46,7 @@ const Login = () => {
         )}
       </Stack>
 
-      {!isLoading && !errorBox && !logged && <LoginForm action={handleSubmit} actionText="Login" />}
+      {!isLoading && !logged && <LoginForm action={handleSubmit} actionText="Login" />}
     </Container>
   );
 };

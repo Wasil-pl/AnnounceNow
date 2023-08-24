@@ -1,42 +1,42 @@
 import { Avatar, Box, Button, Chip, Container, CssBaseline, Input, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './RegisterForm.module.scss';
 import { useForm } from 'react-hook-form';
 import { Error, errorMessages, patterns } from '../../../consts';
 
 const RegisterForm = ({ action }) => {
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [avatar, setAvatar] = useState(null);
   const [selectedFileName, setSelectedFileName] = useState('');
-  const [fileError, setFileError] = useState(null);
   const {
     register,
     handleSubmit: validate,
+    watch,
     formState: { errors },
   } = useForm();
 
-  const handleFileChange = (event) => {
-    setAvatar(event.target.files[0]);
-    const file = event.target.files[0];
-    if (file) setSelectedFileName(file.name);
-  };
+  const inputsData = watch();
+
+  useEffect(() => {
+    if (Object.keys(inputsData).length === 0) return;
+
+    const file = inputsData.file[0];
+
+    if (file) {
+      setSelectedFileName(inputsData.file[0].name);
+    }
+  }, [inputsData.file]);
 
   const handleChipDelete = () => {
-    setAvatar(null);
     setSelectedFileName('');
+    inputsData.file = '';
   };
 
   const handleSubmit = () => {
-    if (!patterns.acceptedFileTypes.includes(avatar.type)) return setFileError(true);
-
     const formData = new FormData();
-    formData.append('avatar', avatar);
-    formData.append('login', login);
-    formData.append('password', password);
-    formData.append('phoneNumber', phoneNumber);
+    formData.append('login', inputsData.login);
+    formData.append('password', inputsData.password);
+    formData.append('phoneNumber', inputsData.phoneNumber);
+    formData.append('avatar', inputsData.file[0]);
 
     return action(formData);
   };
@@ -63,7 +63,6 @@ const RegisterForm = ({ action }) => {
             {...register('login', {
               required: errorMessages.required,
             })}
-            onChange={(event) => setLogin(event.target.value)}
             margin="normal"
             required
             fullWidth
@@ -79,7 +78,6 @@ const RegisterForm = ({ action }) => {
             {...register('password', {
               required: errorMessages.required,
             })}
-            onChange={(event) => setPassword(event.target.value)}
             margin="normal"
             required
             fullWidth
@@ -97,7 +95,6 @@ const RegisterForm = ({ action }) => {
               required: errorMessages.required,
               pattern: { value: patterns.validatePhoneNumber, message: errorMessages.validatePhoneNumber },
             })}
-            onChange={(event) => setPhoneNumber(event.target.value)}
             margin="normal"
             required
             fullWidth
@@ -116,15 +113,18 @@ const RegisterForm = ({ action }) => {
               <Input
                 {...register('file', {
                   required: errorMessages.requiredFile,
+                  validate: {
+                    value: (file) => {
+                      return patterns.acceptedFileTypes.includes(file[0].type) || errorMessages.validateFile;
+                    },
+                  },
                 })}
                 type="file"
                 required
-                onChange={handleFileChange}
                 sx={{ display: 'none' }}
               />
             </Button>
             {errors.file && <Error>{errors.file.message}</Error>}
-            {fileError && <Error>{errorMessages.validateFile}</Error>}
             {selectedFileName && (
               <Chip
                 sx={{ mt: 1, marginLeft: 2 }}

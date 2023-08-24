@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography, Container, Grid, Chip, Input, Box, CssBaseline, Avatar } from '@mui/material';
 import styles from './AdEditForm.module.scss';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
@@ -6,45 +6,50 @@ import { useForm } from 'react-hook-form';
 import { errorMessages, patterns, Error } from '../../../consts';
 
 const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
-  const [title, setTitle] = useState(props.title || '');
-  const [Content, setContent] = useState(props.content || '');
-  const [price, setPrice] = useState(props.price || '');
-  const [address, setAddress] = useState(props.address || '');
-  const [picture, setPicture] = useState(props.picture || null);
   const [selectedFileName, setSelectedFileName] = useState(props.picture || '');
   const date = props.date || new Date().toISOString().slice(0, 10);
-  const [fileError, setFileError] = useState(null);
   const {
     register,
     handleSubmit: validate,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm();
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setPicture(event.target.files[0]);
-    if (file) setSelectedFileName(file.name);
-  };
+  const inputsData = watch();
+
+  useEffect(() => {
+    if (Object.keys(inputsData).length === 0) return;
+
+    const file = inputsData.file[0];
+
+    if (file) {
+      setSelectedFileName(inputsData.file[0].name);
+    }
+  }, [inputsData.file]);
+
+  useEffect(() => {
+    if (Object.keys(props).length === 0) return;
+
+    setValue('title', props.title || '');
+    setValue('content', props.content || '');
+    setValue('price', props.price || '');
+    setValue('address', props.address || '');
+  }, [setValue]);
 
   const handleChipDelete = () => {
-    setPicture(null);
     setSelectedFileName('');
+    inputsData.file = '';
   };
 
   const handleSubmit = () => {
-    if (!patterns.acceptedFileTypes.includes(picture.type)) {
-      setFileError(true);
-      return;
-    }
-
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', Content);
-    formData.append('price', price);
-    formData.append('address', address);
-    formData.append('picture', picture);
+    formData.append('title', inputsData.title);
+    formData.append('content', inputsData.content);
+    formData.append('price', inputsData.price);
+    formData.append('address', inputsData.address);
+    formData.append('picture', inputsData.file[0]);
     formData.append('date', date);
-
     action(formData);
   };
 
@@ -80,11 +85,9 @@ const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
                 name="title"
                 label="Title"
                 variant="outlined"
-                value={title}
                 fullWidth
                 error={!!errors.title}
                 helperText={errors.title?.message}
-                onChange={(event) => setTitle(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -100,11 +103,9 @@ const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
                 name="content"
                 label="Content"
                 variant="outlined"
-                value={Content}
                 fullWidth
                 multiline
                 rows={4}
-                onChange={(event) => setContent(event.target.value)}
                 error={!!errors.content}
                 helperText={errors.content?.message}
               />
@@ -119,15 +120,17 @@ const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
                   <Input
                     {...register('file', {
                       required: errorMessages.requiredFile,
+                      validate: {
+                        value: (file) => {
+                          return patterns.acceptedFileTypes.includes(file[0].type) || errorMessages.validateFile;
+                        },
+                      },
                     })}
                     type="file"
-                    accept={patterns.acceptedFileTypes.join(',')}
-                    onChange={handleFileChange}
                     sx={{ display: 'none' }}
                   />
                 </Button>
                 {errors.file && <Error>{errors.file.message}</Error>}
-                {fileError && <Error>{errorMessages.validateFile}</Error>}
                 {selectedFileName && (
                   <Chip
                     className={styles.chip}
@@ -148,9 +151,7 @@ const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
                 name="price"
                 label="Price"
                 variant="outlined"
-                value={price}
                 fullWidth
-                onChange={(event) => setPrice(event.target.value)}
                 error={!!errors.price}
                 helperText={errors.price?.message}
               />
@@ -164,9 +165,7 @@ const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
                 name="address"
                 label="Address"
                 variant="outlined"
-                value={address}
                 fullWidth
-                onChange={(event) => setAddress(event.target.value)}
                 error={!!errors.address}
                 helperText={errors.address?.message}
               />

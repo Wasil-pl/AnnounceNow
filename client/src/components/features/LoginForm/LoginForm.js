@@ -1,21 +1,21 @@
 import { Avatar, Box, Button, Container, CssBaseline, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { errorMessages } from '../../../consts';
 
 const LoginForm = ({ action }) => {
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-
   const {
     register,
     handleSubmit: validate,
+    watch,
     formState: { errors },
   } = useForm();
 
+  const data = watch();
+  console.log('data:', data);
+
   const handleSubmit = () => {
-    action({ login, password });
+    action(data);
   };
 
   return (
@@ -40,7 +40,6 @@ const LoginForm = ({ action }) => {
             {...register('login', {
               required: errorMessages.required,
             })}
-            onChange={(event) => setLogin(event.target.value)}
             margin="normal"
             required
             fullWidth
@@ -56,7 +55,6 @@ const LoginForm = ({ action }) => {
             {...register('password', {
               required: errorMessages.required,
             })}
-            onChange={(event) => setPassword(event.target.value)}
             margin="normal"
             required
             fullWidth
