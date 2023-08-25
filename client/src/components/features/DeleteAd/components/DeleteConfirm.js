@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './DeleteConfirm.module.scss';
 import { Avatar, Button, Card, CardContent, CardHeader, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { AVATARS_URL } from '../../../config';
+import { AVATARS_URL } from '../../../../config';
 
 const DeleteConfirm = ({ deleteItem, action }) => {
   const handleSubmit = (e) => {

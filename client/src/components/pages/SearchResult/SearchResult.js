@@ -18,14 +18,7 @@ const SearchResult = () => {
 
   return (
     <Container>
-      <Stack
-        sx={{
-          p: 2,
-          margin: 'auto',
-          maxWidth: 400,
-        }}
-        spacing={1}
-      >
+      <Stack className="stackAlerts" spacing={1}>
         {errorBox && (
           <Alert variant="filled" severity="error">
             <AlertTitle>Error</AlertTitle>
@@ -34,7 +27,7 @@ const SearchResult = () => {
         )}
 
         {isLoading && !errorBox && (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Box className="circularProgress">
             <CircularProgress />
           </Box>
         )}

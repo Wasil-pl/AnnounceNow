@@ -1,6 +1,7 @@
 import { Box, Button, Container, Grid, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import style from './SearchPhrase.module.scss';
 
 const SearchPhrase = () => {
   const [searchPhrase, setSearchPhrase] = useState('');
@@ -13,7 +14,7 @@ const SearchPhrase = () => {
 
   return (
     <Container>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+      <Box component="form" onSubmit={handleSubmit} noValidate className={style.container}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={8}>
             <TextField
@@ -21,15 +22,13 @@ const SearchPhrase = () => {
               margin="normal"
               required
               fullWidth
-              id="search"
               label="Search field"
-              name="searchField"
               autoComplete="searchField"
               autoFocus
             />
           </Grid>
           <Grid item xs={4}>
-            <Button type="submit" fullWidth variant="contained" sx={{ height: '100%' }}>
+            <Button className={style.button} type="submit" fullWidth variant="contained">
               Search
             </Button>
           </Grid>

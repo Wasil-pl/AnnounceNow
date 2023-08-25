@@ -1,10 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserErrorState, getUserLoadingState, getUserLoggedState, loginUserRequest } from '../../../redux/UserRedux';
-import LoginForm from '../LoginForm/LoginForm';
+import {
+  getUserErrorState,
+  getUserLoadingState,
+  getUserLoggedState,
+  loginUserRequest,
+} from '../../../../redux/UserRedux';
 import { Alert, AlertTitle, Box, CircularProgress, Container, Stack } from '@mui/material';
-import { successMessages } from '../../../consts';
+import { successMessages } from '../../../../consts';
+import LoginForm from './LoginForm';
 
-const Login = () => {
+export const Login = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = (user) => {
@@ -12,35 +17,28 @@ const Login = () => {
   };
 
   const isLoading = useSelector(getUserLoadingState);
-  const errorBox = useSelector(getUserErrorState);
+  const errorMessages = useSelector(getUserErrorState);
   const logged = useSelector(getUserLoggedState);
 
   return (
     <Container>
-      <Stack
-        sx={{
-          p: 2,
-          margin: 'auto',
-          maxWidth: 400,
-        }}
-        spacing={1}
-      >
-        {errorBox && (
+      <Stack className="stackAlerts" spacing={1}>
+        {errorMessages && (
           <Alert variant="filled" severity="error">
             <AlertTitle>Error</AlertTitle>
-            <strong>{errorBox}</strong>
+            <strong>{errorMessages}</strong>
           </Alert>
         )}
 
-        {logged && !isLoading && !errorBox && (
+        {logged && !isLoading && !errorMessages && (
           <Alert variant="filled" severity="success">
             <AlertTitle>Success</AlertTitle>
             <strong>{successMessages.login}</strong>
           </Alert>
         )}
 
-        {isLoading && !errorBox && (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        {isLoading && !errorMessages && (
+          <Box className="circularProgress">
             <CircularProgress />
           </Box>
         )}
@@ -50,4 +48,3 @@ const Login = () => {
     </Container>
   );
 };
-export default Login;

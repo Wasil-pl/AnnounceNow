@@ -6,32 +6,25 @@ import { Alert, AlertTitle, Box, CircularProgress, Container, Stack } from '@mui
 const Announcments = () => {
   const adsData = useSelector(getAllData);
   const isLoading = useSelector(getLoadingState);
-  const errorBox = useSelector(getErrorState);
+  const errorMessages = useSelector(getErrorState);
 
   return (
     <Container>
-      <Stack
-        sx={{
-          p: 2,
-          margin: 'auto',
-          maxWidth: 400,
-        }}
-        spacing={1}
-      >
-        {errorBox && (
+      <Stack className="stackAlerts" spacing={1}>
+        {errorMessages && (
           <Alert variant="filled" severity="error">
             <AlertTitle>Error</AlertTitle>
-            <strong>{errorBox}</strong>
+            <strong>{errorMessages}</strong>
           </Alert>
         )}
 
-        {isLoading && !errorBox && (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        {isLoading && !errorMessages && (
+          <Box className="circularProgress">
             <CircularProgress />
           </Box>
         )}
       </Stack>
-      {!isLoading && !errorBox && <AdThumb data={adsData} />}
+      {!isLoading && !errorMessages && <AdThumb data={adsData} />}
     </Container>
   );
 };

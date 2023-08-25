@@ -31,14 +31,7 @@ const EditAnnouncment = () => {
 
   return (
     <Container>
-      <Stack
-        sx={{
-          p: 2,
-          margin: 'auto',
-          maxWidth: 400,
-        }}
-        spacing={1}
-      >
+      <Stack className="stackAlerts" spacing={1}>
         {errorBox && (
           <Alert variant="filled" severity="error">
             <AlertTitle>Error</AlertTitle>
@@ -54,7 +47,7 @@ const EditAnnouncment = () => {
         )}
 
         {isLoading && !errorBox && (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Box className="circularProgress">
             <CircularProgress />
           </Box>
         )}
@@ -65,11 +58,7 @@ const EditAnnouncment = () => {
           action={handleSubmit}
           actionText="Edit Post"
           pageTitle="Edit Post"
-          title={adData.title}
-          content={adData.content}
-          price={adData.price}
-          date={adData.date}
-          address={adData.address}
+          defaultValues={{ ...adData, file: adData.picture }}
           picture={adData.picture}
         />
       )}

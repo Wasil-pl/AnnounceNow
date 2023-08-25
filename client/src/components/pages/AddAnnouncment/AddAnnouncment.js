@@ -9,47 +9,40 @@ const AddAnnouncment = () => {
   const [success, setSuccess] = useState(false);
   const dispatch = useDispatch();
   const isLoading = useSelector(getLoadingState);
-  const errorBox = useSelector(getErrorState);
+  const errorMessages = useSelector(getErrorState);
 
   const handleSubmit = (formData) => {
     dispatch(addAdRequest(formData));
 
-    if (!errorBox) {
+    if (!errorMessages) {
       setSuccess(true);
     }
   };
 
   return (
     <Container>
-      <Stack
-        sx={{
-          p: 2,
-          margin: 'auto',
-          maxWidth: 400,
-        }}
-        spacing={1}
-      >
-        {errorBox && (
+      <Stack className="stackAlerts" spacing={1}>
+        {errorMessages && (
           <Alert variant="filled" severity="error">
             <AlertTitle>Error</AlertTitle>
-            <strong>{errorBox}</strong>
+            <strong>{errorMessages}</strong>
           </Alert>
         )}
 
-        {success && !isLoading && !errorBox && (
+        {success && !isLoading && !errorMessages && (
           <Alert variant="filled" severity="success">
             <AlertTitle>Success</AlertTitle>
             <strong>{successMessages.add}</strong>
           </Alert>
         )}
 
-        {isLoading && !errorBox && (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        {isLoading && !errorMessages && (
+          <Box className="circularProgress">
             <CircularProgress />
           </Box>
         )}
       </Stack>
-      {!isLoading && !errorBox && !success && (
+      {!isLoading && !errorMessages && !success && (
         <AddEditForm action={handleSubmit} actionText="Add Post" pageTitle="Add Post" />
       )}
     </Container>

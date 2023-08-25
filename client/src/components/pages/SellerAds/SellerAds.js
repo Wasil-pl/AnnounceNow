@@ -15,33 +15,26 @@ const SellerAds = () => {
 
   const adData = useSelector(getUserAds);
   const isLoading = useSelector(getLoadingState);
-  const errorBox = useSelector(getErrorState);
+  const errorMessage = useSelector(getErrorState);
 
   return (
     <Container>
-      <Stack
-        sx={{
-          p: 2,
-          margin: 'auto',
-          maxWidth: 400,
-        }}
-        spacing={1}
-      >
-        {errorBox && (
+      <Stack className="stackAlerts" spacing={1}>
+        {errorMessage && (
           <Alert variant="filled" severity="error">
             <AlertTitle>Error</AlertTitle>
-            <strong>{errorBox}</strong>
+            <strong>{errorMessage}</strong>
           </Alert>
         )}
 
-        {isLoading && !errorBox && (
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        {isLoading && !errorMessage && (
+          <Box className="circularProgress">
             <CircularProgress />
           </Box>
         )}
       </Stack>
 
-      {!isLoading && !errorBox && <AdThumb data={adData} />}
+      {!isLoading && !errorMessage && <AdThumb data={adData} />}
     </Container>
   );
 };

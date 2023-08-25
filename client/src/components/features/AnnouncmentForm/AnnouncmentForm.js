@@ -16,10 +16,10 @@ import styles from './AnnouncmentForm.module.scss';
 import { titleTypography } from '../AdThumb/AdThumbSettings';
 import EditAnnouncment from '../../pages/EditAnnouncment/EditAnnouncment';
 import { Link } from 'react-router-dom';
-import DeleteAd from '../DeleteAd/DeleteAd';
 import { useSelector } from 'react-redux';
 import { getUserLoggedState } from '../../../redux/UserRedux';
 import SellerAds from '../../pages/SellerAds/SellerAds';
+import { DeleteAd } from '../DeleteAd';
 
 const AnnouncmentForm = ({ data }) => {
   const logged = useSelector(getUserLoggedState);

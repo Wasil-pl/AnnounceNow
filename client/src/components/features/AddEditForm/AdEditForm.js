@@ -8,6 +8,8 @@ import { IMAGES_URL } from '../../../config';
 
 const AdEditForm = ({ pageTitle, action, actionText, defaultValues, ...props }) => {
   const [file, setFile] = useState(null);
+  console.log('file:', file);
+  console.log('file:', file?.type);
   const [selectedFileName, setSelectedFileName] = useState(props.picture || '');
   const [fileError, setFileError] = useState('');
   const {
@@ -27,7 +29,8 @@ const AdEditForm = ({ pageTitle, action, actionText, defaultValues, ...props }) 
     const formData = new FormData();
 
     if (!file) return setFileError(errorMessages.requiredFile);
-    if (!patterns.acceptedFileTypes.includes(file.type)) return setFileError(errorMessages.validateFile);
+    // if (!patterns.acceptedFileTypes.includes(file.type)) return setFileError(errorMessages.validateFile);  // Work in progress
+    // plik z edycji jest pozbawiony typu, więc nie można sprawdzić czy jest to obrazek type: ""
 
     formData.append('title', data.title);
     formData.append('content', data.content);
@@ -47,7 +50,6 @@ const AdEditForm = ({ pageTitle, action, actionText, defaultValues, ...props }) 
       await fetch(IMAGES_URL + defaultValues.picture)
         .then((data) => data.blob())
         .then((parsedData) => {
-          console.log('parsedData', parsedData);
           const file = new File([parsedData], defaultValues.picture);
 
           setFile(file);

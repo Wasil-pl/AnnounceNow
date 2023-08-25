@@ -39,4 +39,17 @@ a:visited {
   justify-content: center !important;
 }
 
+// alerts
+
+.circularProgress {
+  display: flex;
+  justify-content: center;
+}
+
+.stackAlerts {
+  margin: 20px auto 40px;
+  padding: 2px;
+  max-width: 400px;
+}
+
 @import './typography.scss';

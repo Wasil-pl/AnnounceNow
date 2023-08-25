@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import Announcment from '../Announcement/Announcement';
 
 const AdThumb = ({ data }) => {
-  const sortedData = data.sort((a, b) => {
+  // const sortedData = [...data].sort((a, b) => {
+  const sortedData = data.toSorted((a, b) => {
     return new Date(b.date) - new Date(a.date);
   });
 

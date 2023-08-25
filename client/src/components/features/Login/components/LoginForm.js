@@ -1,41 +1,31 @@
 import { Avatar, Box, Button, Container, CssBaseline, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useForm } from 'react-hook-form';
-import { errorMessages } from '../../../consts';
+import { errorMessages } from '../../../../consts';
+import styles from './LoginForm.module.scss';
 
 const LoginForm = ({ action }) => {
   const {
     register,
     handleSubmit: validate,
-    watch,
     formState: { errors },
   } = useForm();
 
-  const data = watch();
-  console.log('data:', data);
-
-  const handleSubmit = () => {
+  const handleSubmit = (data) => {
     action(data);
   };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+      <Box className={styles.container}>
+        <Avatar className={styles.icon}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <Box component="form" onSubmit={validate(handleSubmit)} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={validate(handleSubmit)} noValidate className={styles.formBox}>
           <TextField
             {...register('login', {
               required: errorMessages.required,
@@ -43,9 +33,7 @@ const LoginForm = ({ action }) => {
             margin="normal"
             required
             fullWidth
-            id="login"
             label="login"
-            name="login"
             autoComplete="login"
             autoFocus
             error={!!errors.login}
@@ -58,16 +46,14 @@ const LoginForm = ({ action }) => {
             margin="normal"
             required
             fullWidth
-            name="password"
             label="Password"
             type="password"
-            id="password"
             autoComplete="current-password"
             error={!!errors.password}
             helperText={errors.password?.message}
           />
 
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button className={styles.submitBtn} type="submit" fullWidth variant="contained">
             Login
           </Button>
         </Box>
