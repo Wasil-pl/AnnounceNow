@@ -4,73 +4,88 @@ import styles from './AdEditForm.module.scss';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import { useForm } from 'react-hook-form';
 import { errorMessages, patterns, Error } from '../../../consts';
+import { IMAGES_URL } from '../../../config';
 
-const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
+const AdEditForm = ({ pageTitle, action, actionText, defaultValues, ...props }) => {
+  const [file, setFile] = useState(null);
   const [selectedFileName, setSelectedFileName] = useState(props.picture || '');
-  const date = props.date || new Date().toISOString().slice(0, 10);
+  const [fileError, setFileError] = useState('');
   const {
     register,
-    handleSubmit: validate,
-    watch,
-    setValue,
+    handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues });
 
-  const inputsData = watch();
-
-  useEffect(() => {
-    if (Object.keys(inputsData).length === 0) return;
-
-    const file = inputsData.file[0];
-
-    if (file) {
-      setSelectedFileName(inputsData.file[0].name);
-    }
-  }, [inputsData.file]);
-
-  useEffect(() => {
-    if (Object.keys(props).length === 0) return;
-
-    setValue('title', props.title || '');
-    setValue('content', props.content || '');
-    setValue('price', props.price || '');
-    setValue('address', props.address || '');
-  }, [setValue]);
+  const date = props.date || new Date().toISOString().slice(0, 10);
 
   const handleChipDelete = () => {
     setSelectedFileName('');
-    inputsData.file = '';
+    setFile(null);
   };
 
-  const handleSubmit = () => {
+  const onSubmitCallback = (data) => {
     const formData = new FormData();
-    formData.append('title', inputsData.title);
-    formData.append('content', inputsData.content);
-    formData.append('price', inputsData.price);
-    formData.append('address', inputsData.address);
-    formData.append('picture', inputsData.file[0]);
+
+    if (!file) return setFileError(errorMessages.requiredFile);
+    if (!patterns.acceptedFileTypes.includes(file.type)) return setFileError(errorMessages.validateFile);
+
+    formData.append('title', data.title);
+    formData.append('content', data.content);
+    formData.append('price', data.price);
+    formData.append('address', data.address);
+    formData.append('picture', file);
     formData.append('date', date);
     action(formData);
   };
 
+  // Work in progress
+
+  useEffect(() => {
+    if (!defaultValues) return;
+
+    const getImage = async () => {
+      await fetch(IMAGES_URL + defaultValues.picture)
+        .then((data) => data.blob())
+        .then((parsedData) => {
+          console.log('parsedData', parsedData);
+          const file = new File([parsedData], defaultValues.picture);
+
+          setFile(file);
+
+          // const fileList = new FileList();
+          // fileList[0] = file;
+
+          // setValue('file', [file]);
+
+          // ========= pobieranie pliku =========
+          // const imageBase64 = URL.createObjectURL(parsedData);
+          // const a = document.createElement('a');
+          // a.style.setProperty('display', 'none');
+          // document.body.appendChild(a);
+          // // a.download = url.replace(/^.*[\\\/]/, '')
+          // a.setAttribute('download', true);
+          // a.href = imageBase64;
+          // a.click();
+          // a.remove();
+
+          // LUB (może być blokowane):
+          // window.open(imageBase64);
+        });
+    };
+    getImage();
+  }, [defaultValues]);
+
   return (
     <Container maxWidth="sm">
       <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
+      <Box className={styles.container}>
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <NoteAddIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           {pageTitle}
         </Typography>
-        <form onSubmit={validate(handleSubmit)}>
+        <form className={styles.formBox} onSubmit={handleSubmit(onSubmitCallback)}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -82,7 +97,6 @@ const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
                   },
                   pattern: { value: patterns.textPattern, message: errorMessages.textPattern },
                 })}
-                name="title"
                 label="Title"
                 variant="outlined"
                 fullWidth
@@ -100,7 +114,6 @@ const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
                   },
                   pattern: { value: patterns.textPattern, message: errorMessages.textPattern },
                 })}
-                name="content"
                 label="Content"
                 variant="outlined"
                 fullWidth
@@ -115,31 +128,22 @@ const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
             </Grid>
             <Grid item xs={12}>
               <div className={styles.avatarContainer}>
-                <Button className={styles.pictureBtn} component="label" variant="contained" sx={{ mt: 3 }}>
+                <Button className={styles.pictureBtn} component="label" variant="contained">
                   Add Picture
                   <Input
-                    {...register('file', {
-                      required: errorMessages.requiredFile,
-                      validate: {
-                        value: (file) => {
-                          return patterns.acceptedFileTypes.includes(file[0].type) || errorMessages.validateFile;
-                        },
-                      },
-                    })}
+                    onChange={(e) => {
+                      setFile(e.target.files[0]);
+                      setSelectedFileName(e.target.files[0].name);
+                    }}
                     type="file"
                     sx={{ display: 'none' }}
                   />
                 </Button>
                 {errors.file && <Error>{errors.file.message}</Error>}
                 {selectedFileName && (
-                  <Chip
-                    className={styles.chip}
-                    sx={{ mt: 1, marginLeft: 2 }}
-                    label={selectedFileName}
-                    color="primary"
-                    onDelete={handleChipDelete}
-                  />
+                  <Chip className={styles.chip} label={selectedFileName} color="primary" onDelete={handleChipDelete} />
                 )}
+                {fileError && <Error>{fileError}</Error>}
               </div>
             </Grid>
             <Grid item xs={12}>
@@ -148,7 +152,6 @@ const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
                   required: errorMessages.required,
                   pattern: { value: patterns.validatePrice, message: errorMessages.validatePrice },
                 })}
-                name="price"
                 label="Price"
                 variant="outlined"
                 fullWidth
@@ -162,7 +165,6 @@ const AdEditForm = ({ pageTitle, action, actionText, ...props }) => {
                   required: errorMessages.required,
                   pattern: { value: patterns.textPattern, message: errorMessages.textPattern },
                 })}
-                name="address"
                 label="Address"
                 variant="outlined"
                 fullWidth
