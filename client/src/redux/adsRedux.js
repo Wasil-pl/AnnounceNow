@@ -93,12 +93,10 @@ export const userAdsRequest = (id) => {
 };
 
 export const addAdRequest = (formData) => {
-  console.log('formData:', formData);
   return async (dispatch) => {
     dispatch(startRequest());
     try {
       const data = await httpClient.post(`${API_URL}/api/ads`, formData);
-      console.log('data:', data);
       dispatch(addAd(data));
       dispatch(endRequest());
     } catch (error) {
@@ -113,7 +111,6 @@ export const editAdRequest = (formData, id) => {
     dispatch(startRequest());
     try {
       const data = await httpClient.put(`${API_URL}/api/ads/${id}`, formData);
-      console.log('data:', data);
       dispatch(editAd(data));
       dispatch(endRequest());
     } catch (error) {
@@ -164,7 +161,6 @@ export const adsReducer = (
       return { ...statePart, userAds: [...action.payload] };
 
     case ADD_AD_REQUEST:
-      console.log('action.payload:', action.payload);
       return {
         ...statePart,
         list: [...statePart.list, action.payload],

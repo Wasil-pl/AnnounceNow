@@ -1,8 +1,8 @@
 const User = require('../models/User.model');
 const bcrypt = require('bcryptjs');
 const getImageFileType = require('../utils/getImageFileType');
-const deleteFile = require('../utils/deleteFile');
 const { validatePhoneNumber, acceptedFileTypes } = require('../const');
+const { deleteFileFromAvatars } = require('../utils/deleteFile');
 
 exports.register = async (req, res) => {
   try {
@@ -33,7 +33,7 @@ exports.register = async (req, res) => {
     });
     res.status(201).json({ message: 'User created ' + user.login });
   } catch (err) {
-    deleteFile(req.file);
+    deleteFileFromAvatars(req.file);
     res.status(500).json({ message: err.message });
   }
 };

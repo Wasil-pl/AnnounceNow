@@ -7,7 +7,7 @@ const {
   validateDate,
 } = require('../../const');
 const Announcement = require('../../models/Announcment.model');
-const deleteFile = require('../../utils/deleteFile');
+const { deleteFileFromImages } = require('../../utils/deleteFile');
 const getImageFileType = require('../../utils/getImageFileType');
 
 exports.add = async (req, res) => {
@@ -47,7 +47,7 @@ exports.add = async (req, res) => {
     await newAnnouncement.save();
     res.json(newAnnouncement);
   } catch (err) {
-    deleteFile(req.file);
+    deleteFileFromImages(req.file);
     res.status(err.status ?? 500).json({ message: err.message });
   }
 };

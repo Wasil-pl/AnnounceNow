@@ -5,10 +5,11 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import { useForm } from 'react-hook-form';
 import { errorMessages, patterns, Error } from '../../../consts';
 import { IMAGES_URL } from '../../../config';
+import { removeLastNumberSegment } from '../../../Utils/removeLastNumberSegment';
 
 const AdEditForm = ({ pageTitle, action, actionText, defaultValues, ...props }) => {
   const [file, setFile] = useState(null);
-  const [selectedFileName, setSelectedFileName] = useState(props.picture || '');
+  const [selectedFileName, setSelectedFileName] = useState('');
   const [fileError, setFileError] = useState('');
   const {
     register,
@@ -27,9 +28,7 @@ const AdEditForm = ({ pageTitle, action, actionText, defaultValues, ...props }) 
     const formData = new FormData();
 
     if (!file) return setFileError(errorMessages.requiredFile);
-    if (file.type !== '' && !patterns.acceptedFileTypes.includes(file.type))
-      return setFileError(errorMessages.validateFile);
-    // plik z edycji jest pozbawiony typu, więc nie można sprawdzić czy jest to obrazek type: ""
+    if (!patterns.acceptedFileTypes.includes(file.type)) return setFileError(errorMessages.validateFile);
 
     formData.append('title', data.title);
     formData.append('content', data.content);
@@ -40,8 +39,6 @@ const AdEditForm = ({ pageTitle, action, actionText, defaultValues, ...props }) 
     action(formData);
   };
 
-  // Work in progress
-
   useEffect(() => {
     if (!defaultValues) return;
 
@@ -49,9 +46,12 @@ const AdEditForm = ({ pageTitle, action, actionText, defaultValues, ...props }) 
       await fetch(IMAGES_URL + defaultValues.picture)
         .then((data) => data.blob())
         .then((parsedData) => {
-          const file = new File([parsedData], defaultValues.picture);
+          const oryginalFileName = removeLastNumberSegment(defaultValues.picture);
+
+          const file = new File([parsedData], oryginalFileName, { type: parsedData.type });
 
           setFile(file);
+          setSelectedFileName(oryginalFileName);
 
           // const fileList = new FileList();
           // fileList[0] = file;

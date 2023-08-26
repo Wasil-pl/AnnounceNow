@@ -7,15 +7,17 @@ const {
   validateDate,
 } = require('../../const');
 const Announcement = require('../../models/Announcment.model');
-const deleteFile = require('../../utils/deleteFile');
+const { deleteFileFromImages, deleteFile } = require('../../utils/deleteFile');
 const getImageFileType = require('../../utils/getImageFileType');
 
 exports.edit = async (req, res) => {
   try {
     const { title, content, date, price, address } = req.body;
     const announcement = await Announcement.findById(req.params.id);
+
     const seller = req.session.login.id;
     const file = req.file;
+    const oldPicture = announcement.picture;
 
     if (announcement.seller != seller) throw { message: 'Not your ad...', status: 403 };
     // "throw" that error mean that we will not execute next lines of code. We will go to catch block
@@ -49,8 +51,11 @@ exports.edit = async (req, res) => {
     announcement.picture = file.filename;
     await announcement.save();
     res.json(announcement);
+
+    deleteFile(oldPicture);
   } catch (err) {
-    deleteFile(req.file);
+    deleteFileFromImages(req.file);
+
     res.status(err.status ?? 500).json({ message: err.message });
   }
 };

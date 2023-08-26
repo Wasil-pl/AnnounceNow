@@ -58,7 +58,7 @@ const EditAnnouncment = () => {
           action={handleSubmit}
           actionText="Edit Post"
           pageTitle="Edit Post"
-          defaultValues={{ ...adData, file: adData.picture }}
+          defaultValues={{ ...adData }}
           picture={adData.picture}
         />
       )}

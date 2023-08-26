@@ -1,5 +1,6 @@
 const Announcement = require('../../models/Announcment.model');
 const fs = require('fs');
+const { deleteFile } = require('../../utils/deleteFile');
 
 exports.delete = async (req, res) => {
   try {
@@ -10,7 +11,7 @@ exports.delete = async (req, res) => {
 
     if (!announcement) res.status(404).json({ message: 'Not found...' });
 
-    fs.unlinkSync('./public/uploads/images/' + announcement.picture);
+    deleteFile(announcement.picture.filename);
 
     await Announcement.deleteOne(announcement);
     res.json({ message: 'OK' });

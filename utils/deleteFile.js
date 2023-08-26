@@ -1,15 +1,30 @@
 const fs = require('fs');
 
-let path = './public/uploads/images/';
+const picturePath = './public/uploads/images/';
+const avatarPath = './public/uploads/avatars/';
 
-const deleteFile = (file) => {
+const deleteFileFromAvatars = (file) => {
   try {
-    if (file.fieldname === 'avatar') path = './public/uploads/avatars/';
-
-    fs.unlinkSync(path + file.filename);
+    fs.unlinkSync(avatarPath + file.filename);
   } catch (err) {
     console.error('Error deleting file:', err);
   }
 };
 
-module.exports = deleteFile;
+const deleteFileFromImages = (file) => {
+  try {
+    fs.unlinkSync(picturePath + file.filename);
+  } catch (err) {
+    console.error('Error deleting file:', err);
+  }
+};
+
+const deleteFile = (fileName) => {
+  try {
+    fs.unlinkSync(picturePath + fileName);
+  } catch (err) {
+    console.error('Error deleting file:', err);
+  }
+};
+
+module.exports = { deleteFileFromAvatars, deleteFileFromImages, deleteFile };
