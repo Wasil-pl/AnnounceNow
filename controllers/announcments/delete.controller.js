@@ -11,7 +11,7 @@ exports.delete = async (req, res) => {
 
     if (!announcement) res.status(404).json({ message: 'Not found...' });
 
-    deleteFile(announcement.picture.filename);
+    deleteFile(announcement.picture);
 
     await Announcement.deleteOne(announcement);
     res.json({ message: 'OK' });
